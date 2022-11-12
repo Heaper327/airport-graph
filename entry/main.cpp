@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
-    Board<5> b;
+    Board b(10);
+    b.toggle(3, 3);
     return 0;
 }
