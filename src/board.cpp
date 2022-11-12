@@ -7,7 +7,7 @@ Board::Board(unsigned n) {
 }
 
 void Board::toggle(unsigned row, unsigned col) {
-    _board[row][col] = !_board[row][col];
+    _board[row][col] = !(_board[row][col]);
 }
 
 
