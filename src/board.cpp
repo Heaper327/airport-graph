@@ -11,14 +11,22 @@ void Board::toggle(unsigned row, unsigned col) {
 }
 
 
-Board operator-(const Board& lhs, const Board& rhs) {
+bool Board::getBulb(unsigned row, unsigned col) const {
+    return _board[row][col];
+}
+unsigned Board::getSize() const {
+    return size;
+}
+
+inline Board operator-(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
-    Board toReturn(lhs.size);
-    for (unsigned i = 0 ; i < lhs.size; i++) {
-        for (unsigned j =0; j < lhs.size; j++) {
-            if (lhs._board[i][j] != rhs._board[i][j]) {
+    unsigned size = lhs.getSize();
+    Board toReturn(size);
+    for (unsigned i = 0 ; i < size; i++) {
+        for (unsigned j =0; j < size; j++) {
+            if (lhs.getBulb(i,j) != rhs.getBulb(i,j)) {
                 toReturn.toggle(i,j);
             }
         }
@@ -26,13 +34,27 @@ Board operator-(const Board& lhs, const Board& rhs) {
     return toReturn;
 }
 
-bool operator==(const Board& lhs, const Board& rhs) {
-    if (lhs.size != rhs.size) {
-        return false;
+Board& Board::operator=(const Board& rhs) {
+    if ((*this) == rhs ) {
+        return *this;
     }
-    for (unsigned i = 0; i < lhs.size; i++) {
-        for (unsigned j =0; j < lhs.size; j++) {
-            if (lhs._board[i][j] != rhs._board[i][j]) {
+    size = rhs.size;
+    for (unsigned i = 0; i < size; i++) {
+        for (unsigned j =0; j < size; j++) {
+            _board[i][j] = rhs._board[i][j];
+        }
+    }
+    return *this;
+}
+
+inline bool operator==(const Board& lhs, const Board& rhs) {
+    if (lhs.size != rhs.size) {
+        throw runtime_error("wrong size");
+    }
+    unsigned size = lhs.getSize();
+    for (unsigned i = 0; i < size; i++) {
+        for (unsigned j =0; j < size; j++) {
+            if (lhs.getBulb(i,j) != rhs.getBulb(i,j)) {
                 return false;
             }
         }
@@ -44,3 +66,7 @@ inline bool operator!=(const Board& lhs, const Board& rhs) {
 
     return !(rhs == lhs);
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 643517e (Fix board.cpp typos)
