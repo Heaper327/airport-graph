@@ -84,6 +84,7 @@ Board& Board::operator=(const Board& rhs) {
         return *this;
     }
     size = rhs.size;
+    _board.resize(size, vector<bool>(size));
     for (unsigned i = 0; i < size; i++) {
         for (unsigned j =0; j < size; j++) {
             _board[i][j] = rhs._board[i][j];
