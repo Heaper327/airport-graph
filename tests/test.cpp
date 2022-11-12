@@ -5,7 +5,7 @@
 #include <string>
 #include <stack>
 #include "cs225/PNG.h"
-
+#include "board.cpp"
 #include "board.h"
 
 using namespace cs225;
