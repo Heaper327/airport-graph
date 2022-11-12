@@ -11,14 +11,22 @@ void Board::toggle(unsigned row, unsigned col) {
 }
 
 
-friend Board operator-(const Board& lhs, const Board& rhs) {
+bool Board::getBulb(unsigned row, unsigned col) const {
+    return _board[row][col];
+}
+unsigned Board::getSize() const {
+    return size;
+}
+
+inline Board operator-(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
+    unsigned size = lhs.getSize();
     Board toReturn(size);
     for (unsigned i = 0 ; i < size; i++) {
         for (unsigned j =0; j < size; j++) {
-            if (lhs._board[i][j] != rhs._board[i][j]) {
+            if (lhs.getBulb(i,j) != rhs.getBulb(i,j)) {
                 toReturn.toggle(i,j);
             }
         }
@@ -39,13 +47,14 @@ Board& Board::operator=(const Board& rhs) {
     return *this;
 }
 
-friend bool operator==(const Board& lhs, const Board& rhs) {
+inline bool operator==(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
+    unsigned size = lhs.getSize();
     for (unsigned i = 0; i < size; i++) {
         for (unsigned j =0; j < size; j++) {
-            if (lhs._board[i][j] != rhs._board[i][j]) {
+            if (lhs.getBulb(i,j) != rhs.getBulb(i,j)) {
                 return false;
             }
         }
@@ -53,9 +62,8 @@ friend bool operator==(const Board& lhs, const Board& rhs) {
     return true;
 }
 
-friend bool operator!=(const Board& lhs, const Board& rhs) [
-    if (lhs.size != rhs.size) {
-        throw runtime_error("wrong size");
-    }
-    return !(lhs == rhs);
-]
+inline bool operator!=(const Board& lhs, const Board& rhs) {
+
+    return !(rhs == lhs);
+}
+
