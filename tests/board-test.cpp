@@ -27,8 +27,8 @@ TEST_CASE("Parametrized constructor test", "[weight=10][part1]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
-	for (size_t row = 0; row < 5; row++) {
-		for (size_t col = 0; col < 5; col++) {
+	for (size_t row = 0; row < input.size(); row++) {
+		for (size_t col = 0; col < input.size(); col++) {
 			REQUIRE(board.getBulb(row, col) == input[row][col]);
 		}
 	}
