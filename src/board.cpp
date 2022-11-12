@@ -11,7 +11,7 @@ void Board::toggle(unsigned row, unsigned col) {
 }
 
 
-friend Board Board::operator-(const Board& lhs, const Board& rhs) {
+friend Board operator-(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
@@ -26,7 +26,7 @@ friend Board Board::operator-(const Board& lhs, const Board& rhs) {
     return toReturn;
 }
 
-friend bool Board::operator==(const Board& lhs, const Board& rhs) {
+friend bool operator==(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
@@ -40,7 +40,7 @@ friend bool Board::operator==(const Board& lhs, const Board& rhs) {
     return true;
 }
 
-friend bool Board::operator!=(const Board& lhs, const Board& rhs) [
+friend bool operator!=(const Board& lhs, const Board& rhs) [
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
