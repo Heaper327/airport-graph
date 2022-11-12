@@ -107,6 +107,6 @@ class Board {
      * 
      * A value of true means a light bulb is on, and false means a light bulb is off
     */
-    vector<vector<bool>> _board;
     unsigned size;
+    vector<vector<bool>> _board;
 };

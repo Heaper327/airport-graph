@@ -66,4 +66,3 @@ inline bool operator!=(const Board& lhs, const Board& rhs) {
 
     return !(rhs == lhs);
 }
-
