@@ -6,19 +6,17 @@
 using namespace std;
 
 /**
- * A Board<n> represents the state of an nxn light bulb puzzle - in other words, the state of
+ * A Board represents the state of an nxn light bulb puzzle - in other words, the state of
  * an nxn grid of light bulbs
- * 
- * We chose to make n a template paramter instead of a member variable, because this allows
- * our graph to explicitly only store boards of the same size (List<Board<n>>, e.g.)
 */
-template<unsigned n>
 class Board {
     public:
     /**
      * Default constructor, creates a nxn puzzle where all the light bulbs are off
+     * 
+     * @param n the side length of the board
     */
-    Board();
+    Board(unsigned n);
     /**
      * Parametrized constructor, initializes _board with the 2d vector given by the user
     */
@@ -50,6 +48,12 @@ class Board {
     */
     void toggle(unsigned row, unsigned col);
     /**
+     * Return the side length of the board, n
+     * 
+     * @return The side length of the board
+    */
+    unsigned getSize() const;
+    /**
      * Return the state of the light bulb at (row, col) in the board
      * To modify the board use the toggle() function
      * 
@@ -78,20 +82,20 @@ class Board {
      * 
      * @return An nxn board representing the difference between lhs and rhs
     */
-    friend Board operator-(const Board& lhs, const Board& rhs) const;
+    friend Board operator-(const Board& lhs, const Board& rhs);
     /**
      * Equality operator that returns true if the two boards are identical (i.e. the states of 
      * all light bulbs in the two boards are the same)
      * 
      * @return True if the lhs and rhs are identical, false otherwise
     */
-    friend bool operator==(const Board& lhs, const Board& rhs) const;
+    friend bool operator==(const Board& lhs, const Board& rhs);
     /**
      * Inequality operator that returns true if the two boards are not identical. See operator==
      * 
      * @return True if the lhs and rhs are different, false if they are identical
     */
-    friend bool operator!=(const Board& lhs, const Board& rhs) const;
+    friend bool operator!=(const Board& lhs, const Board& rhs);
 
 
     private:
