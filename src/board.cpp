@@ -40,9 +40,7 @@ bool operator==(const Board& lhs, const Board& rhs) {
     return true;
 }
 
-friend bool operator!=(const Board& lhs, const Board& rhs) [
-    if (lhs.size != rhs.size) {
-        throw runtime_error("wrong size");
-    }
-    return !(lhs == rhs);
-]
+inline bool operator!=(const Board& lhs, const Board& rhs) {
+
+    return !(rhs == lhs);
+}
