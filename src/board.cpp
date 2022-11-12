@@ -26,6 +26,19 @@ friend Board operator-(const Board& lhs, const Board& rhs) {
     return toReturn;
 }
 
+Board& Board::operator=(const Board& rhs) {
+    if ((*this) == rhs ) {
+        return *this;
+    }
+    size = rhs.size;
+    for (unsigned i = 0; i < size; i++) {
+        for (unsigned j =0; j < size; j++) {
+            _board[i][j] = rhs._board[i][j];
+        }
+    }
+    return *this;
+}
+
 friend bool operator==(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
