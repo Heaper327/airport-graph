@@ -49,11 +49,7 @@ Board::Board(const Board& rhs) {
 Board::Board(vector<vector<bool>> board) {
     size = board.size();
     _board.resize(size, vector<bool>(size, false));
-    for (unsigned i = 0 ; i < size; i++) {
-        for (unsigned j =0; j < size; j++) {
-            _board[i][j] = board[i][j];
-        }
-    }
+    _board = board;
 }
 
 void Board::toggleOne(unsigned row, unsigned col) {
