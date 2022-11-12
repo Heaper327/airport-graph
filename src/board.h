@@ -109,5 +109,3 @@ class Board {
     */
     vector<vector<bool>> _board;
 };
-
-#include "board.hpp"
