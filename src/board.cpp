@@ -8,9 +8,16 @@ Board::Board(unsigned n) {
 
 void Board::toggle(unsigned row, unsigned col) {
     assert(row < size && col < size);
-    _board[row][col] = !(_board[row][col]);
+    for (unsigned i = row; i < row + 3; i++) {
+        for (unsigned j=  col; j < col + 3; j++) {
+            _board[row][col] = !_board[row][col];
+        }
+    }
 }
 
+void Board::toggleOne(unsigned row, unsigned col) {
+    _board[row][col] = !_board[row][col];
+}
 
 bool Board::getBulb(unsigned row, unsigned col) const {
     return _board[row][col];
@@ -28,7 +35,7 @@ inline Board operator-(const Board& lhs, const Board& rhs) {
     for (unsigned i = 0 ; i < size; i++) {
         for (unsigned j =0; j < size; j++) {
             if (lhs.getBulb(i,j) != rhs.getBulb(i,j)) {
-                toReturn.toggle(i,j);
+                toReturn.toggleOne(i,j);
             }
         }
     }

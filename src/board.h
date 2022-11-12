@@ -96,6 +96,7 @@ class Board {
      * @return True if the lhs and rhs are different, false if they are identical
     */
     friend bool operator!=(const Board& lhs, const Board& rhs);
+    void toggleOne(unsigned row, unsigned col);
 
 
     private:
