@@ -66,7 +66,3 @@ inline bool operator!=(const Board& lhs, const Board& rhs) {
 
     return !(rhs == lhs);
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 643517e (Fix board.cpp typos)
