@@ -7,6 +7,7 @@ Board::Board(unsigned n) {
 }
 
 void Board::toggle(unsigned row, unsigned col) {
+    assert(row < size && col < size);
     _board[row][col] = !(_board[row][col]);
 }
 
