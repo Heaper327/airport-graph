@@ -62,8 +62,7 @@ bool Board::getBulb(unsigned row, unsigned col) const {
 unsigned Board::getSize() const {
     return size;
 }
-
-inline Board operator-(const Board& lhs, const Board& rhs) {
+Board operator-(const Board& lhs, const Board& rhs) {
     if (lhs.size != rhs.size) {
         throw runtime_error("wrong size");
     }
@@ -78,7 +77,6 @@ inline Board operator-(const Board& lhs, const Board& rhs) {
     }
     return toReturn;
 }
-
 Board& Board::operator=(const Board& rhs) {
     if ((*this) == rhs ) {
         return *this;
@@ -93,11 +91,11 @@ Board& Board::operator=(const Board& rhs) {
     return *this;
 }
 
-inline bool operator==(const Board& lhs, const Board& rhs) {
+bool operator==(const Board& lhs, const Board& rhs) {
     int a = lhs.getSize();
     int b = rhs.getSize();
-    if (!(a == b)) {
-        throw runtime_error("wrong  size");
+    if (a != b) {
+        return false;
     }
     int tem = lhs.getSize();
     unsigned size = lhs.getSize();
@@ -112,7 +110,7 @@ inline bool operator==(const Board& lhs, const Board& rhs) {
 }
 
 
-inline bool operator!=(const Board& lhs, const Board& rhs) {
+bool operator!=(const Board& lhs, const Board& rhs) {
 
     return !(rhs == lhs);
 }
