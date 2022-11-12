@@ -12,8 +12,9 @@ using namespace cs225;
 using namespace std;
 
 
-TEST_CASE("Dummy", "[weight=10][part1]")
+TEST_CASE("Constructor", "[weight=10][part1]")
 {
-	Board<3> board;
+	Board board(12);
+	
 	SUCCEED("Yep the constructor worked");
 }
