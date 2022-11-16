@@ -67,16 +67,17 @@ class Solver {
         Board _goal;
 
         /**
-         * Estimates the distance between a board to the goal board, a non-negative real number
+         * Return the hamming distance between two boards a and b. The hamming distance is defined
+         * As the number of light bulbs whose state differ between the two boards
          * 
-         * The distance function should preferrably be consistent and admissible
-         * Roughly speaking, it must satisfy the triangle inequality and never overestimate the distance
-         * (see https://courses.engr.illinois.edu/ece448/sp2020/slides/lec05.pdf for examples)
+         * e.g. The hamming distance between the following two boards is 2
+         * 000 110
+         * 111 111
+         * 000 000
          * 
-         * @param board The board whose distance is to be calculated
          * @return The estimated distance
         */
-        unsigned heuristic(const Board& board) const;
+        unsigned hammingDist(const Board& a, const Board& b) const;
         /**
          * Private helper that find all neighbors of a board. That is, all boards that can be reached
          * by performing one toggle operation on the given board
