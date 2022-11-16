@@ -1,6 +1,9 @@
 # build files
 /build
 
+# vscode local files
+/.vscode 
+
 # macos system file
 .DS_Store
 
