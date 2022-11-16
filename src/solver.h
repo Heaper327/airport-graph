@@ -1,6 +1,8 @@
 #include <string>
 #include <list>
 #include <stdexcept>
+#include <queue>
+#include <map>
 
 #include "board.h"
 
@@ -65,6 +67,19 @@ class Solver {
         */
         Board _initial;
         Board _goal;
+
+        struct Node{
+            Board board;
+            unsigned dist_to_initial;
+            unsigned dist_to_goal;
+            /**
+             * Comparator used in the priority queue of the A* solve method
+             * The comparator assumes that both a and b are in _dist_to_initial
+             * 
+             * @return true if a should be visited before b, and false otherwise
+            */
+            bool operator<(const Node& rhs) const;
+        };
 
         /**
          * Return the hamming distance between two boards a and b. The hamming distance is defined
