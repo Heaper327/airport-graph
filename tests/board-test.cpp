@@ -153,6 +153,24 @@ TEST_CASE("Subtraction test, symmetry", "[weight=10][part1]")
 	REQUIRE(board1 - board2 == board2 - board1);
 }
 
+TEST_CASE("Less than test, anti-reflexive", "[weight=10][part1]")
+{
+	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
+	Board board1(input1);
+	REQUIRE(!(board1 < board1));
+}
+
+TEST_CASE("Less than test, anti-symmetry", "[weight=10][part1]")
+{
+	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
+	vector<vector<bool>> input2 = {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {1, 1, 1, 1}};
+	Board board1(input1);
+	Board board2(input2);
+	REQUIRE(!(board1 < board2 && board2 < board1));
+}
+
+// TODO: Find ways to test transitivity property of operator<
+
 TEST_CASE("Subtraction test, different size", "[weight=10][part1]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
