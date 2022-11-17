@@ -7,34 +7,56 @@ Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goa
 }
 
 list<Board> Solver::solveAStar() const {
-    priority_queue<Node> frontier;
-    frontier.emplace(_initial, 0, hammingDist(_initial, _goal));
+    Compare comp = Compare(_initial, _goal);
+    priority_queue<Board, vector<Board>, Compare> frontier{comp};
+    frontier.push(_initial);
+    map<Board, Board> predecessor;
     while (!frontier.empty()) {
-        Node cur = frontier.top();
+        Board cur = frontier.top();
         frontier.pop();
-        for (const auto& neighbor: getNeighbors(cur.board)) {
-            /**
-             * The distance between two adjacent boards. Set to 9 to make hammingDist a consistent heuristic,
-             * since the hamming distance between two adjacent boards is guaranteed to be <= 9
-            */
-            const unsigned kAdjacentDist = 9;
-            unsigned new_dist_to_initial = cur.dist_to_initial + kAdjacentDist;
-            if (new_dist_to_initial < 0 ) {} // oh no
-            /**
-             * TODO: save the distance to initial board of nodes that are not in the frontier
-             * Either have a separate set of explored nodes, or remove node class and add a compare class
-             * That stores all known distances and does comparison for our PQ
-            */
+        if (cur == _goal) {
+            break;
+        }
+        for (const auto& neighbor: getNeighbors(cur)) {
+            // since cur is in frontier, its distance is guaranteed to be defined
+            if (comp.updateDist(neighbor, cur)) {
+                predecessor[neighbor] = cur;
+                frontier.push(neighbor);
+            }
         }
     }
-    return list<Board>();
+    // backtrack to find the path from _initial to _goal
+    list<Board> solution;
+    for (Board cur = _goal; cur != _initial; cur = predecessor.at(cur)) {
+        solution.push_front(cur);
+    }
+    solution.push_front(_initial);
+    return solution;
 }
 
-bool Solver::Node::operator<(const Node& rhs) const {
-    return dist_to_initial + dist_to_goal < rhs.dist_to_initial + rhs.dist_to_goal;
+bool Solver::Compare::operator()(const Board& a, const Board& b) const {
+    return dist_to_initial.at(a) + hammingDist(a, _goal) + dist_to_initial.at(b) + hammingDist(b, _goal);
 }
 
-unsigned Solver::hammingDist(const Board& a, const Board& b) const {
+bool Solver::Compare::updateDist(const Board& to_update, const Board& shortcut) {
+    /**
+     * The distance between two adjacent boards. Set to 9 to make hammingDist a consistent heuristic,
+     * since the hamming distance between two adjacent boards is guaranteed to be <= 9
+    */
+    const unsigned kAdjacentDist = 9;
+    unsigned new_dist = dist_to_initial.at(shortcut) + kAdjacentDist;
+    // if to_update's distance is undefined yet
+    if (find(dist_to_initial.begin(), dist_to_initial.end(), to_update) == dist_to_initial.end()) {
+        dist_to_initial.insert({to_update, new_dist});
+        return true;
+    } else if (new_dist < dist_to_initial.at(to_update)) {
+        dist_to_initial.at(to_update) = new_dist;
+        return true;
+    }
+    return false;
+}
+
+unsigned Solver::hammingDist(const Board& a, const Board& b) {
     unsigned dist = 0; 
     for (size_t row = 0; row < a.getSize(); row++) {
         for (size_t col = 0; col < a.getSize(); col++) {
