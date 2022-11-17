@@ -1,6 +1,10 @@
 #include "board.h"
 #include <stdexcept>
 
+Board::Board() : size(0), _board() {
+    // do nothing
+}
+
 Board::Board(unsigned n) {
     size = n;
     _board = vector<vector<bool>>(n, vector<bool>(n, false));
@@ -113,4 +117,8 @@ bool operator==(const Board& lhs, const Board& rhs) {
 bool operator!=(const Board& lhs, const Board& rhs) {
 
     return !(rhs == lhs);
+}
+
+bool operator<(const Board& lhs, const Board& rhs) {
+    return lhs._board < rhs._board;
 }

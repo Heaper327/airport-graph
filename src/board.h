@@ -12,7 +12,12 @@ using namespace std;
 class Board {
     public:
     /**
-     * Default constructor, creates a nxn puzzle where all the light bulbs are off
+     * Default constructor that creates a 0x0 puzzle
+     * Used for default instantiation of Board by containers
+    */
+    Board();
+    /**
+     * Parametrized constructor, creates a nxn puzzle where all the light bulbs are off
      * 
      * @param n the side length of the board
     */
@@ -96,7 +101,12 @@ class Board {
      * @return True if the lhs and rhs are different, false if they are identical
     */
     friend bool operator!=(const Board& lhs, const Board& rhs);
-
+    /**
+     * Comparison operator used by ordered containers of Board
+     * 
+     * @return True if lhs < rhs, false otherwise
+    */
+    friend bool operator<(const Board& lhs, const Board& rhs);
 
     private:
     /**
