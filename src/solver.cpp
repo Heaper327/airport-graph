@@ -46,7 +46,7 @@ bool Solver::Compare::updateDist(const Board& to_update, const Board& shortcut) 
     const unsigned kAdjacentDist = 9;
     unsigned new_dist = dist_to_initial.at(shortcut) + kAdjacentDist;
     // if to_update's distance is undefined yet
-    if (find(dist_to_initial.begin(), dist_to_initial.end(), to_update) == dist_to_initial.end()) {
+    if (dist_to_initial.find(to_update) == dist_to_initial.end()) {
         dist_to_initial.insert({to_update, new_dist});
         return true;
     } else if (new_dist < dist_to_initial.at(to_update)) {
