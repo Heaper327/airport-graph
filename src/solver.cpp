@@ -11,7 +11,6 @@ Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goa
     }
 }
 
-
 list<Board> Solver::getNeighbors(const Board& board) {
     list<Board> toReturn;
     size_t size = board.getSize();
@@ -25,7 +24,7 @@ list<Board> Solver::getNeighbors(const Board& board) {
             toReturn.push_back(tem);
         }
     }
-    
+
     return toReturn;
 }
 
@@ -67,13 +66,13 @@ Solver::Solver(string filename) {
 
 Solver& Solver::operator=(const Solver& other) {
     _initial = other._initial;
-    _goal = other._initial;
+    _goal = other._goal;
     return *this;
 }
 
 Solver::Solver(const Solver& other) {
     _initial = other._initial;
-    _goal = other._initial;
+    _goal = other._goal;
  }
 
 list<Board> Solver::solveAStar() const {
