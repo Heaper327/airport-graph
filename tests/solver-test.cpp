@@ -31,7 +31,7 @@ TEST_CASE("Board constructor test, different size", "[weight=10][part1]")
 
 TEST_CASE("File constructor test", "[weight=10][part1]")
 {
-	Solver solver{"3x3-game.txt"};
+	Solver solver{"../tests/3x3-game.txt"};
 	Board expected_initial = Board({{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
 	Board expected_goal = Board({{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
 	REQUIRE(solver.getInitial() == expected_initial);
@@ -40,27 +40,27 @@ TEST_CASE("File constructor test", "[weight=10][part1]")
 
 TEST_CASE("File constructor test, malformed board", "[weight=10][part1]")
 {
-	REQUIRE_THROWS(Solver{"4x4-malformed-game.txt"});
+	REQUIRE_THROWS(Solver{"../tests/4x4-malformed-game.txt"});
 }
 
 TEST_CASE("File constructor test, missing row", "[weight=10][part1]")
 {
-	REQUIRE_THROWS(Solver{"4x4-missing-row-game.txt"});
+	REQUIRE_THROWS(Solver{"../tests/4x4-missing-row-game.txt"});
 }
 
 TEST_CASE("File constructor test, invalid char", "[weight=10][part1]")
 {
-	REQUIRE_THROWS(Solver{"4x4-invalid-char-game.txt"});
+	REQUIRE_THROWS(Solver{"../tests/4x4-invalid-char-game.txt"});
 }
 
 TEST_CASE("File constructor test, incorrect dimension", "[weight=10][part1]")
 {
-	REQUIRE_THROWS(Solver{"4x4-n-mismatch-game.txt"});
+	REQUIRE_THROWS(Solver{"../tests/4x4-n-mismatch-game.txt"});
 }
 
 TEST_CASE("Solving 3x3 game test", "[weight=10][part1]")
 {
-	Solver solver{"3x3-game.txt"};
+	Solver solver{"../tests/3x3-game.txt"};
 	list<Board> solution = solver.solveAStar();
 	list<Board> expected_solution = {
 		Board({
@@ -79,7 +79,7 @@ TEST_CASE("Solving 3x3 game test", "[weight=10][part1]")
 
 TEST_CASE("Solving simple 4x4 game test", "[weight=10][part1]")
 {
-	Solver solver{"4x4-simple-game.txt"};
+	Solver solver{"../tests/4x4-simple-game.txt"};
 	list<Board> solution = solver.solveAStar();
 	list<Board> expected_solution = {
 		Board({
