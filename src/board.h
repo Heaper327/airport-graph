@@ -107,6 +107,9 @@ class Board {
      * @return True if lhs < rhs, false otherwise
     */
     friend bool operator<(const Board& lhs, const Board& rhs);
+    /*
+    * Helper function for solver, toggle one bulb one time
+    */
     void toggleOne(unsigned row, unsigned col);
 
     private:
