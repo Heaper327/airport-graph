@@ -62,6 +62,14 @@ class Solver {
      * @return A list of boards, each representing a step in the solution
     */
     list<Board> solveAStar() const;
+    /**
+     * Getter method that returns the initial board
+    */
+    Board getInitial() const;
+    /**
+     * Getter method that returns the initial board
+    */
+    Board getGoal() const;
 
     private:
     /**
