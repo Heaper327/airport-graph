@@ -65,11 +65,11 @@ class Solver {
     /**
      * Getter method that returns the initial board
     */
-    Board getInitial() const;
+    Board getInitial() const { return _initial; }
     /**
      * Getter method that returns the initial board
     */
-    Board getGoal() const;
+    Board getGoal() const { return _goal; }
 
     private:
     /**
