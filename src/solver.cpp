@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <list>
 using namespace std;
 
 Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {
@@ -10,6 +11,23 @@ Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goa
     }
 }
 
+
+list<Board> Solver::getNeighbors(const Board& board) {
+    list<Board> toReturn;
+    size_t size = board.getSize();
+    if (size < 3) {
+        throw runtime_error("wrong size");
+    }
+    for (size_t i =0; i <= size -3; i++) {
+        for (size_t j =0; j <= size - 3 ; j++ ) {
+            Board tem = board;
+            tem.toggle(i, j);
+            toReturn.push_back(tem);
+        }
+    }
+    
+    return toReturn;
+}
 
 Solver::Solver(string filename) {
     ifstream file(filename);
@@ -49,7 +67,7 @@ Solver::Solver(string filename) {
 
 Solver& Solver::operator=(const Solver& other) {
     _initial = other._initial;
-    _goal = other._goal;
+    _goal = other._initial;
     return *this;
 }
 
