@@ -79,7 +79,7 @@ class Solver {
         /**
          * Parametrized constructor
         */
-        Compare(const Board& initial, const Board& goal);
+        Compare(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {}
         /**
          * Compares the priority of two boards in regard to searching for the goal board
          * More specifically, this function compares d(a) + h(a) with d(b) + h(b),
