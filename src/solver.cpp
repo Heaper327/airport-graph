@@ -30,39 +30,46 @@ list<Board> Solver::getNeighbors(const Board& board) {
 
 Solver::Solver(string filename) {
     ifstream file(filename);
-    int line_number = 0;
-    int word;
-    int size;
-    while (file >> word) {
-        if (!line_number) {
-            if (word < 3) {
-                throw runtime_error("wrong size");
-            }
-            size = word;
-            _initial = Board(word);
-            _goal = Board(word);
-            line_number++;
-            continue;
-        }
-        string tem = to_string(word);
-        int row = (line_number  - 1) % size;
-        if (line_number < size + 1) {
-            for (int i =0; i < size;i++) {
-                if (_initial.getBulb(row, (int)tem[i]) != word) {
-                    _initial.toggleOne(row, (int)tem[i]);
-                }
-            }
-        } else {
-            for (int i =0; i < size;i++) {
-                if (_goal.getBulb(row, (int)tem[i]) != word) {
-                    _goal.toggleOne(row, (int)tem[i]);
-                }
+    string line;
+    // Read and verify size of the boards
+    if (!getline(file, line))
+        throw runtime_error("File does not contain the dimension of boards");
+    if (stoi(line) < 3) {
+        throw runtime_error("Board dimension must be at least 3");
+    }
+    unsigned n = stoi(line);
+    _initial = Board(n);
+    _goal = Board(n);
+    // Read and verify the content of the boards
+    for (unsigned row = 0; row < n; row++) {
+        if (!getline(file, line) || line.size() != n)
+            throw runtime_error("Boards are malformed");
+        for (unsigned col = 0; col < n; col++) {
+            char bulb = line.at(col);
+            if (bulb == '0') {
+                // do nothing
+            } else if (bulb == '1') {
+                _initial.toggleOne(row, col);
+            } else {
+                throw runtime_error("Boards contain invalid character. Only 0 and 1 are allowed in the boards");
             }
         }
-        line_number++;
+    }
+    for (unsigned row = 0; row < n; row++) {
+        if (!getline(file, line) || line.size() != n)
+            throw runtime_error("Boards are malformed");
+        for (unsigned col = 0; col < n; col++) {
+            char bulb = line.at(col);
+            if (bulb == '0') {
+                // do nothing
+            } else if (bulb == '1') {
+                _goal.toggleOne(row, col);
+            } else {
+                throw runtime_error("Boards contain invalid character. Only 0 and 1 are allowed in the boards");
+            }
+        }
     }
 }
-
 
 Solver& Solver::operator=(const Solver& other) {
     _initial = other._initial;
