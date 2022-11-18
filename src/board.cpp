@@ -28,9 +28,9 @@ std::string Board::print() const {
     for (unsigned i = 0; i < size; i++) {
         for (unsigned j =0; j < size; j++) {
             if (_board[i][j]) {
-                toReturn.append("O");
+                toReturn.append("⚪");
             } else {
-                toReturn.append("#");
+                toReturn.append("⚫");
             }
         }
         if (i != size - 1) {
