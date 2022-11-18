@@ -1,10 +1,62 @@
 #include "solver.h"
+#include <fstream>
+#include <string>
+#include <iostream>
+using namespace std;
 
 Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {
     if (initial.getSize() != goal.getSize()) {
         throw runtime_error("Initial and goal boards have different dimensions");
     }
 }
+
+
+Solver::Solver(string filename) {
+    ifstream file(filename);
+    int line_number = 0;
+    int word;
+    int size;
+    while (file >> word) {
+        if (!line_number) {
+            if (word < 3) {
+                throw runtime_error("wrong size");
+            }
+            size = word;
+            _initial = Board(word);
+            _goal = Board(word);
+            line_number++;
+            continue;
+        }
+        string tem = to_string(word);
+        int row = (line_number  - 1) % size;
+        if (line_number < size + 1) {
+            for (int i =0; i < size;i++) {
+                if (_initial.getBulb(row, (int)tem[i]) != word) {
+                    _initial.toggleOne(row, (int)tem[i]);
+                }
+            }
+        } else {
+            for (int i =0; i < size;i++) {
+                if (_goal.getBulb(row, (int)tem[i]) != word) {
+                    _goal.toggleOne(row, (int)tem[i]);
+                }
+            }
+        }
+        line_number++;
+    }
+}
+
+
+Solver& Solver::operator=(const Solver& other) {
+    _initial = other._initial;
+    _goal = other._initial;
+    return *this;
+}
+
+Solver::Solver(const Solver& other) {
+    _initial = other._initial;
+    _goal = other._initial;
+ }
 
 list<Board> Solver::solveAStar() const {
     Compare comp = Compare(_initial, _goal);

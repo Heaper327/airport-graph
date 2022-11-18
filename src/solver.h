@@ -46,11 +46,11 @@ class Solver {
     /**
      * Copy constructor that creates a deep copy of another game
     */
-    Solver(const Solver&);
+    Solver(const Solver& other);
     /**
      * Copy assignment operator that creates a deep copy of another game
     */
-    Solver& operator=(const Solver&);
+    Solver& operator=(const Solver& other);
     /**
      * Default destructor
     */
