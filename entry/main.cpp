@@ -10,6 +10,9 @@ int main()
     Board initial(5);
     Board goal = initial;
     goal.toggle(0, 0);
+    goal.toggle(2, 2);
+    goal.toggle(0, 1);
+    goal.toggle(1, 0);
 
     Solver solver{initial, goal};
     auto solution = solver.solveAStar();
@@ -17,5 +20,6 @@ int main()
         cout << "==========\n";
         cout << step.print() << "\n";
     }
+    cout << "==========\n";
     return 0;
 }
