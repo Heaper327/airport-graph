@@ -49,7 +49,7 @@ Solver::Solver(string filename) {
 
 Solver& Solver::operator=(const Solver& other) {
     _initial = other._initial;
-    _goal = other._initial;
+    _goal = other._goal;
     return *this;
 }
 
