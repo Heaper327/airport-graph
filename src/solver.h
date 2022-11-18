@@ -85,9 +85,10 @@ class Solver {
     class Compare{
         public:
         /**
-         * Parametrized constructor
+         * Parametrized constructor that saves initial and goal, and push initial into
+         * the distance map
         */
-        Compare(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {}
+        Compare(const Board& initial, const Board& goal);
         /**
          * Compares the priority of two boards in regard to searching for the goal board
          * More specifically, this function compares d(a) + h(a) with d(b) + h(b),

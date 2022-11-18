@@ -110,8 +110,12 @@ list<Board> Solver::solveAStar() const {
     return solution;
 }
 
+Solver::Compare::Compare(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {
+    dist_to_initial[initial] = 0;
+}
+
 bool Solver::Compare::operator()(const Board& a, const Board& b) const {
-    return dist_to_initial.at(a) + hammingDist(a, _goal) + dist_to_initial.at(b) + hammingDist(b, _goal);
+    return dist_to_initial.at(a) + hammingDist(a, _goal) < dist_to_initial.at(b) + hammingDist(b, _goal);
 }
 
 bool Solver::Compare::updateDist(const Board& to_update, const Board& shortcut) {
