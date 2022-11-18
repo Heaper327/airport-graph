@@ -88,13 +88,13 @@ class Solver {
          * Parametrized constructor that saves initial and goal, and push initial into
          * the distance map
         */
-        Compare(const Board& initial, const Board& goal);
+        Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial);
         /**
          * Compares the priority of two boards in regard to searching for the goal board
          * More specifically, this function compares d(a) + h(a) with d(b) + h(b),
          * where d is the distance of a board to the initial board, and h is the heuristic function
          * 
-         * @return true if a should be explored before b, and false otherwise
+         * @return true if b should be explored before a, and false otherwise
         */
         bool operator()(const Board& a, const Board& b) const;
         /**
@@ -112,9 +112,9 @@ class Solver {
          * Distance map and goal board must be stored in compare
          * so they can be accessed by the comparator
         */
-        map<Board, unsigned> dist_to_initial;
         Board _initial;
         Board _goal;
+        map<Board, unsigned>* _dist_to_initial;
     };
 
     /**

@@ -83,7 +83,8 @@ Solver::Solver(const Solver& other) {
  }
 
 list<Board> Solver::solveAStar() const {
-    Compare comp = Compare(_initial, _goal);
+    map<Board, unsigned> dist_to_initial;
+    Compare comp = Compare(_initial, _goal, &dist_to_initial);
     priority_queue<Board, vector<Board>, Compare> frontier{comp};
     frontier.push(_initial);
     map<Board, Board> predecessor;
@@ -110,27 +111,31 @@ list<Board> Solver::solveAStar() const {
     return solution;
 }
 
-Solver::Compare::Compare(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {
-    dist_to_initial[initial] = 0;
+Solver::Compare::Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial): 
+    _initial(initial), 
+    _goal(goal), 
+    _dist_to_initial(dist_to_initial) 
+{
+    dist_to_initial->insert({initial, 0});
 }
 
 bool Solver::Compare::operator()(const Board& a, const Board& b) const {
-    return dist_to_initial.at(a) + hammingDist(a, _goal) < dist_to_initial.at(b) + hammingDist(b, _goal);
+    return _dist_to_initial->at(a) + hammingDist(a, _goal) > _dist_to_initial->at(b) + hammingDist(b, _goal);
 }
 
 bool Solver::Compare::updateDist(const Board& to_update, const Board& shortcut) {
     /**
-     * The distance between two adjacent boards. Set to 9 to make hammingDist a consistent heuristic,
+     * The distance between two adjacent boards is set to 9 to make hammingDist a consistent heuristic,
      * since the hamming distance between two adjacent boards is guaranteed to be <= 9
     */
     const unsigned kAdjacentDist = 9;
-    unsigned new_dist = dist_to_initial.at(shortcut) + kAdjacentDist;
+    unsigned new_dist = _dist_to_initial->at(shortcut) + kAdjacentDist;
     // if to_update's distance is undefined yet
-    if (dist_to_initial.find(to_update) == dist_to_initial.end()) {
-        dist_to_initial.insert({to_update, new_dist});
+    if (_dist_to_initial->find(to_update) == _dist_to_initial->end()) {
+        _dist_to_initial->insert({to_update, new_dist});
         return true;
-    } else if (new_dist < dist_to_initial.at(to_update)) {
-        dist_to_initial.at(to_update) = new_dist;
+    } else if (new_dist < _dist_to_initial->at(to_update)) {
+        _dist_to_initial->at(to_update) = new_dist;
         return true;
     }
     return false;
