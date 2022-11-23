@@ -65,6 +65,10 @@ class Solver {
     /**
      * Getter method that returns the initial board
     */
+    list<Board> solveidf() const;
+    /**
+     * Getter method that returns the initial board
+    */
     Board getInitial() const { return _initial; }
     /**
      * Getter method that returns the initial board
