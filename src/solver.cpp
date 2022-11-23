@@ -111,6 +111,45 @@ list<Board> Solver::solveAStar() const {
     return solution;
 }
 
+list<Board> Solver::solveidf() const {
+    queue<Board> q;
+    q.push(_initial);
+    map<Board, Board> predecessor;
+    unordered_map<string, int> visited;
+    visited[_initial.print()] = 1;
+    bool isfind = false;
+    while (!q.empty()) {
+        int q_size = q.size();
+        for (int i = 0; i < q_size; i++) {
+            Board cur = q.front();
+            if (cur == _goal) {
+                isfind = true;
+                break;
+            }
+            for (const auto& neighbor: getNeighbors(cur)) {
+                if (visited.find(neighbor.print()) == visited.end()) {
+                    q.push(neighbor);
+                    predecessor[neighbor] =cur;
+                    visited[neighbor.print()] = 1;
+                }
+            }
+            q.pop();
+        }
+        if (isfind) {
+            break;
+        }
+    }
+
+    // backtrack to find the path from _initial to _goal
+    list<Board> solution;
+    for (Board cur = _goal; cur != _initial; cur = predecessor.at(cur)) {  
+        solution.push_front(cur);
+    }
+
+    solution.push_front(_initial);
+    return solution;
+}
+
 Solver::Compare::Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial): 
     _initial(initial), 
     _goal(goal), 
