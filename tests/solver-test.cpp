@@ -98,3 +98,45 @@ TEST_CASE("Solving simple 4x4 game test", "[weight=10][part1]")
 	REQUIRE(solution == expected_solution);
 }
 
+
+TEST_CASE("Solving 3x3 idf game test", "[weight=10][part1]")
+{
+	Solver solver{"../tests/3x3-game.txt"};
+	list<Board> solution = solver.solveidf();
+	list<Board> expected_solution = {
+		Board({
+			{0, 0, 0},
+			{0, 0, 0},
+			{0, 0, 0}
+		}),
+		Board({
+			{1, 1, 1},
+			{1, 1, 1},
+			{1, 1, 1}
+		}),
+	};
+	REQUIRE(solution == expected_solution);
+}
+
+TEST_CASE("Solving simple 4x4 idf game test", "[weight=10][part1]")
+{
+	Solver solver{"../tests/4x4-simple-game.txt"};
+	list<Board> solution = solver.solveidf();
+	list<Board> expected_solution = {
+		Board({
+			{0, 0, 0, 0},
+			{0, 0, 0, 0},
+			{0, 0, 0, 0},
+			{0, 0, 0, 0},
+		}),
+		Board({
+			{0, 1, 1, 1},
+			{0, 1, 1, 1},
+			{0, 1, 1, 1},
+			{0, 0, 0, 0},
+		}),
+	};
+	REQUIRE(solution == expected_solution);
+}
+
+
