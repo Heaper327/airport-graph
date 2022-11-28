@@ -111,7 +111,7 @@ list<Board> Solver::solveAStar() const {
     return solution;
 }
 
-list<Board> Solver::solveidf() const {
+list<Board> Solver::solve_bfs() const {
     queue<Board> q;
     q.push(_initial);
     map<Board, Board> predecessor;
@@ -149,6 +149,59 @@ list<Board> Solver::solveidf() const {
     solution.push_front(_initial);
     return solution;
 }
+
+
+bool Solver::limited_dfs(int max_depth, int cur_depth,  const Board& cur_stat, const Board& target_stat,  unordered_map<string, int>& visited, map<Board, Board>& predecessor) {
+
+    if (cur_depth > max_depth) {
+        return false;
+    }
+    else if (visited[cur_stat.print()] == 1) {
+        return false;
+    }
+    else {
+        visited[cur_stat.print()] = 1;
+        if (cur_stat == target_stat) {
+            return true;
+        }
+        else {
+            for (const auto& neighbor: getNeighbors(cur_stat)) {
+                predecessor[neighbor] =cur_stat;
+                if (limited_dfs(max_depth, cur_depth + 1, neighbor, target_stat, visited, predecessor)) { 
+                    return true;
+                }        
+            }
+            return false;
+        }    
+    }
+
+}
+
+
+list<Board> Solver::solveidf_idf(int max_search_depth) { 
+    int search_depth = 0;
+    int max_depth = max_search_depth;
+    bool find = false;
+    list<Board> solution;
+    while( !find && search_depth  < max_depth) {
+        map<Board, Board> predecessor;
+        unordered_map<string, int> visited;
+        find = this->limited_dfs(search_depth, 0, _initial, _goal, visited, predecessor);
+        if (find) {
+            for (Board cur = _goal; cur != _initial; cur = predecessor.at(cur)) {  
+                solution.push_front(cur);
+
+            }
+            solution.push_front(_initial);
+            break;
+        }
+        search_depth++;
+    }
+    
+    return solution;
+
+}
+
 
 Solver::Compare::Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial): 
     _initial(initial), 
