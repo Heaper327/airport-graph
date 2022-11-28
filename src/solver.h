@@ -65,7 +65,15 @@ class Solver {
     /**
      * Getter method that returns the initial board
     */
-    list<Board> solveidf() const;
+    list<Board> solve_bfs() const;
+    /**
+    * Getter method that returns the initial board
+    */
+    list<Board> solveidf_idf(int max_search_depth);
+    /**
+    * Getter method that returns the initial board
+    */
+    bool limited_dfs(int max_depth, int cur_depth, const Board& cur_stat,  const Board& target_stat, unordered_map<string, int>& visited, map<Board, Board>& predecessor);
     /**
      * Getter method that returns the initial board
     */
