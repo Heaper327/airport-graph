@@ -3,8 +3,11 @@
 #include "board.h"
 #include "solver.h"
 
-class SolverIDS : Solver {
+class SolverIDS : public Solver {
     public:
+    // explicitly inherit constructors
+    using Solver::Solver;
+    using Solver::operator=;
     /**
      * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
      * to the goal board - using BFS
