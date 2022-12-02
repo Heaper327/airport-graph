@@ -1,8 +1,4 @@
 #include "solver.h"
-#include <fstream>
-#include <string>
-#include <iostream>
-#include <list>
 using namespace std;
 
 Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {
@@ -11,8 +7,8 @@ Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goa
     }
 }
 
-list<Board> Solver::getNeighbors(const Board& board) {
-    list<Board> toReturn;
+vector<Board> Solver::getNeighbors(const Board& board) {
+    vector<Board> toReturn;
     size_t size = board.getSize();
     if (size < 3) {
         throw runtime_error("wrong size");
@@ -80,166 +76,17 @@ Solver& Solver::operator=(const Solver& other) {
 Solver::Solver(const Solver& other) {
     _initial = other._initial;
     _goal = other._goal;
- }
+}
 
-list<Board> Solver::solveAStar() const {
-    map<Board, unsigned> dist_to_initial;
-    Compare comp = Compare(_initial, _goal, &dist_to_initial);
-    priority_queue<Board, vector<Board>, Compare> frontier{comp};
-    frontier.push(_initial);
-    map<Board, Board> predecessor;
-    while (!frontier.empty()) {
-        Board cur = frontier.top();
-        frontier.pop();
-        if (cur == _goal) {
-            break;
-        }
-        for (const auto& neighbor: getNeighbors(cur)) {
-            // since cur is in frontier, its distance is guaranteed to be defined
-            if (comp.updateDist(neighbor, cur)) {
-                predecessor[neighbor] = cur;
-                frontier.push(neighbor);
-            }
-        }
+vector<Board> Solver::predToSolution(const map<Board, Board>& pred) const {
+    vector<Board> solution;
+    for (Board cur = _goal; pred.find(cur) != pred.end(); cur = pred.at(cur)) {  
+        solution.push_back(cur);
     }
-    // backtrack to find the path from _initial to _goal
-    list<Board> solution;
-    for (Board cur = _goal; cur != _initial; cur = predecessor.at(cur)) {
-        solution.push_front(cur);
+    reverse(solution.begin(), solution.end());
+    // verify that solution is indeed a path from initial to goal
+    if (solution.front() != _initial) {
+        return vector<Board>{};
     }
-    solution.push_front(_initial);
     return solution;
-}
-
-list<Board> Solver::solve_bfs() const {
-    queue<Board> q;
-    q.push(_initial);
-    map<Board, Board> predecessor;
-    unordered_map<string, int> visited;
-    visited[_initial.print()] = 1;
-    bool isfind = false;
-    while (!q.empty()) {
-        int q_size = q.size();
-        for (int i = 0; i < q_size; i++) {
-            Board cur = q.front();
-            if (cur == _goal) {
-                isfind = true;
-                break;
-            }
-            for (const auto& neighbor: getNeighbors(cur)) {
-                if (visited.find(neighbor.print()) == visited.end()) {
-                    q.push(neighbor);
-                    predecessor[neighbor] =cur;
-                    visited[neighbor.print()] = 1;
-                }
-            }
-            q.pop();
-        }
-        if (isfind) {
-            break;
-        }
-    }
-
-    // backtrack to find the path from _initial to _goal
-    list<Board> solution;
-    for (Board cur = _goal; cur != _initial; cur = predecessor.at(cur)) {  
-        solution.push_front(cur);
-    }
-
-    solution.push_front(_initial);
-    return solution;
-}
-
-
-bool Solver::limited_dfs(int max_depth, int cur_depth,  const Board& cur_stat, const Board& target_stat,  unordered_map<string, int>& visited, map<Board, Board>& predecessor) {
-
-    if (cur_depth > max_depth) {
-        return false;
-    }
-    else if (visited[cur_stat.print()] == 1) {
-        return false;
-    }
-    else {
-        visited[cur_stat.print()] = 1;
-        if (cur_stat == target_stat) {
-            return true;
-        }
-        else {
-            for (const auto& neighbor: getNeighbors(cur_stat)) {
-                predecessor[neighbor] =cur_stat;
-                if (limited_dfs(max_depth, cur_depth + 1, neighbor, target_stat, visited, predecessor)) { 
-                    return true;
-                }        
-            }
-            return false;
-        }    
-    }
-
-}
-
-
-list<Board> Solver::solveidf_idf(int max_search_depth) { 
-    int search_depth = 0;
-    int max_depth = max_search_depth;
-    bool find = false;
-    list<Board> solution;
-    while( !find && search_depth  < max_depth) {
-        map<Board, Board> predecessor;
-        unordered_map<string, int> visited;
-        find = this->limited_dfs(search_depth, 0, _initial, _goal, visited, predecessor);
-        if (find) {
-            for (Board cur = _goal; cur != _initial; cur = predecessor.at(cur)) {  
-                solution.push_front(cur);
-
-            }
-            solution.push_front(_initial);
-            break;
-        }
-        search_depth++;
-    }
-    
-    return solution;
-
-}
-
-
-Solver::Compare::Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial): 
-    _initial(initial), 
-    _goal(goal), 
-    _dist_to_initial(dist_to_initial) 
-{
-    dist_to_initial->insert({initial, 0});
-}
-
-bool Solver::Compare::operator()(const Board& a, const Board& b) const {
-    return _dist_to_initial->at(a) + hammingDist(a, _goal) > _dist_to_initial->at(b) + hammingDist(b, _goal);
-}
-
-bool Solver::Compare::updateDist(const Board& to_update, const Board& shortcut) {
-    /**
-     * The distance between two adjacent boards is set to 9 to make hammingDist a consistent heuristic,
-     * since the hamming distance between two adjacent boards is guaranteed to be <= 9
-    */
-    const unsigned kAdjacentDist = 9;
-    unsigned new_dist = _dist_to_initial->at(shortcut) + kAdjacentDist;
-    // if to_update's distance is undefined yet
-    if (_dist_to_initial->find(to_update) == _dist_to_initial->end()) {
-        _dist_to_initial->insert({to_update, new_dist});
-        return true;
-    } else if (new_dist < _dist_to_initial->at(to_update)) {
-        _dist_to_initial->at(to_update) = new_dist;
-        return true;
-    }
-    return false;
-}
-
-unsigned Solver::hammingDist(const Board& a, const Board& b) {
-    unsigned dist = 0; 
-    for (size_t row = 0; row < a.getSize(); row++) {
-        for (size_t col = 0; col < a.getSize(); col++) {
-            if (a.getBulb(row, col) != b.getBulb(row, col))
-                dist++;
-        }
-    }
-    return dist;
 }

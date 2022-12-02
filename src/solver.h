@@ -1,5 +1,6 @@
+#include <fstream>
 #include <string>
-#include <list>
+#include <vector>
 #include <stdexcept>
 #include <queue>
 #include <map>
@@ -7,10 +8,6 @@
 
 #include "board.h"
 
-/**
- * TODO: Make Solver a virtual base class, implemented by children classes
- * such as A* solver, IDF solver, etc. 
-*/
 class Solver {
     public:
     /**
@@ -55,98 +52,51 @@ class Solver {
      * Default destructor
     */
     ~Solver() = default;
-    /**
-     * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
-     * to the goal board - using A* search algorithm
-     * 
-     * @return A list of boards, each representing a step in the solution
-    */
-    list<Board> solveAStar() const;
-    /**
-     * Getter method that returns the initial board
-    */
-    list<Board> solve_bfs() const;
-    /**
-    * Getter method that returns the initial board
-    */
-    list<Board> solveidf_idf(int max_search_depth);
-    /**
-    * Getter method that returns the initial board
-    */
-    bool limited_dfs(int max_depth, int cur_depth, const Board& cur_stat,  const Board& target_stat, unordered_map<string, int>& visited, map<Board, Board>& predecessor);
+
     /**
      * Getter method that returns the initial board
     */
     Board getInitial() const { return _initial; }
     /**
-     * Getter method that returns the initial board
+     * Getter method that returns the target board
     */
     Board getGoal() const { return _goal; }
 
-    private:
+    /**
+     * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
+     * to the goal board.
+     * 
+     * To be implemented by concrete child classes
+     * 
+     * @return A vector of boards, each representing a step in the solution. An empty vector if no
+     * solution exists
+    */
+    virtual vector<Board> solve() = 0;
+
+    protected:
     /**
      * The initial and goal board of the game
     */
     Board _initial;
     Board _goal;
 
-    // TODO: calculating heuristics takes O(n^2) time, should we memoize it instead?
     /**
-     * Comparator classed used by the priority queue of the A* solve method
-    */
-    class Compare{
-        public:
-        /**
-         * Parametrized constructor that saves initial and goal, and push initial into
-         * the distance map
-        */
-        Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial);
-        /**
-         * Compares the priority of two boards in regard to searching for the goal board
-         * More specifically, this function compares d(a) + h(a) with d(b) + h(b),
-         * where d is the distance of a board to the initial board, and h is the heuristic function
-         * 
-         * @return true if b should be explored before a, and false otherwise
-        */
-        bool operator()(const Board& a, const Board& b) const;
-        /**
-         * Try to update the distance to origin of to_update by going through shortcut
-         * Assumes that shortcut is a neighbor of to_update
-         * 
-         * @param to_update The board whose distance to origin is to be updated
-         * @param shortcut The board that we try to travel through to get to to_update
-         * @return true if to_update's distance is reduced, false otherwise
-        */
-        bool updateDist(const Board& to_update, const Board& shortcut);
-
-        private:
-        /**
-         * Distance map and goal board must be stored in compare
-         * so they can be accessed by the comparator
-        */
-        Board _initial;
-        Board _goal;
-        map<Board, unsigned>* _dist_to_initial;
-    };
-
-    /**
-     * Return the hamming distance between two boards a and b. The hamming distance is defined
-     * As the number of light bulbs whose state differ between the two boards
-     * 
-     * e.g. The hamming distance between the following two boards is 2
-     * 000 110
-     * 111 111
-     * 000 000
-     * 
-     * @return The estimated distance
-    */
-    static unsigned hammingDist(const Board& a, const Board& b);
-    /**
-     * Private helper that find all neighbors of a board. That is, all boards that can be reached
+     * Protected helper that find all neighbors of a board. That is, all boards that can be reached
      * by performing one toggle operation on the given board
      * 
      * @param board the board whose neighbors are to be found
      * @return a list of boards that are neighbors to the given board
     */
-    static list<Board> getNeighbors(const Board& board);
+    static vector<Board> getNeighbors(const Board& board);
+
+    /**
+     * Protected helper that converts a predecessor map produced by graph traversal to a solution to
+     * the puzzle by backtracking
+     * Assumes that pred does not contain cycles
+     * 
+     * @param pred A predecessor map of the game graph, where pred[A] = B means that ...->B->A->... is
+     * part of the path from initial to goal board
+     * @return A solution to the puzzle. Empty vector if no solution can be found from the predecessor graph
+    */
+    vector<Board> predToSolution(const map<Board, Board>& pred) const;
 };
