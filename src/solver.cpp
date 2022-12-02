@@ -80,13 +80,16 @@ Solver::Solver(const Solver& other) {
 
 vector<Board> Solver::predToSolution(const map<Board, Board>& pred) const {
     vector<Board> solution;
-    for (Board cur = _goal; pred.find(cur) != pred.end(); cur = pred.at(cur)) {  
+    Board cur = _goal;
+    while (pred.find(cur) != pred.end()) {  
         solution.push_back(cur);
+        cur = pred.at(cur);
     }
-    reverse(solution.begin(), solution.end());
     // verify that solution is indeed a path from initial to goal
-    if (solution.front() != _initial) {
+    if (cur != _initial) {
         return vector<Board>{};
     }
+    solution.push_back(_initial);
+    reverse(solution.begin(), solution.end());
     return solution;
 }
