@@ -69,13 +69,13 @@ class Board {
     */
     bool getBulb(unsigned row, unsigned col) const;
     /**
-     * Returns a string representation of the board, where off light bulbs are represented by '#'
-     * and on light bulbs are represented by 'O'. For example, the following represents a 3x3 board
+     * Returns a string representation of the board, where off light bulbs are represented by '⚫'
+     * and on light bulbs are represented by '⚪'. For example, the following represents a 3x3 board
      * with 4 light bulbs that are on
      * 
-     * #O#
-     * O#O
-     * #O#
+     * ⚫⚪⚫
+     * ⚪⚫⚪
+     * ⚫⚪⚫
      * 
      * @return The string representation of this board
     */

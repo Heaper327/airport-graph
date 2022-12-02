@@ -182,7 +182,7 @@ TEST_CASE("Subtraction test, different size", "[weight=10][part1]")
 TEST_CASE("Print test simple", "[weight=10][part1]")
 {
 	Board board1(3);
-	REQUIRE(board1.print() == "###\n###\n###");
+	REQUIRE(board1.print() == "⚫⚫⚫\n⚫⚫⚫\n⚫⚫⚫");
 }
 
 
@@ -190,5 +190,5 @@ TEST_CASE("Print test pattern", "[weight=10][part1]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	Board board1(input1);
-	REQUIRE(board1.print() == "#O#O\nO#O#\n#O#O\nO#O#");
+	REQUIRE(board1.print() == "⚫⚪⚫⚪\n⚪⚫⚪⚫\n⚫⚪⚫⚪\n⚪⚫⚪⚫");
 }
