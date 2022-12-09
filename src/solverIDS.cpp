@@ -44,6 +44,10 @@ bool SolverIDS::search(unsigned remaining_depth, vector<Board>& path) {
         return false;
     }
     for (const auto& neighbor: getNeighbors(cur)) {
+        // cycle pruning
+        if (find(path.begin(), path.end(), neighbor) != path.end()) {
+            continue;
+        }
         path.push_back(neighbor);
         if (search(remaining_depth - 1, path)) { 
             return true;
