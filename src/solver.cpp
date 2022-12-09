@@ -8,20 +8,21 @@ Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goa
 }
 
 vector<Board> Solver::getNeighbors(const Board& board) {
-    vector<Board> toReturn;
     size_t size = board.getSize();
     if (size < 3) {
         throw runtime_error("wrong size");
     }
-    for (size_t i =0; i <= size -3; i++) {
-        for (size_t j =0; j <= size - 3 ; j++ ) {
-            Board tem = board;
-            tem.toggle(i, j);
-            toReturn.push_back(tem);
+    size_t toggle_bound = size - 2;
+    vector<Board> to_return(toggle_bound * toggle_bound);
+    size_t idx = 0;
+    for (size_t i = 0; i < toggle_bound; i++) {
+        for (size_t j = 0; j < toggle_bound ; j++ ) {
+            to_return.at(idx) = board;
+            to_return.at(idx).toggle(i, j);
+            idx++;
         }
     }
-
-    return toReturn;
+    return to_return;
 }
 
 Solver::Solver(string filename) {
