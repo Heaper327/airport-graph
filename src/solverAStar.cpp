@@ -1,13 +1,20 @@
 #include "solverAStar.h"
+#include <iostream>
 using namespace std;
 
 vector<Board> SolverAStar::solve() {
-    map<Board, unsigned> dist_to_initial;
+    unordered_map<Board, unsigned, BoardHash> dist_to_initial;
     Compare comp = Compare(_initial, _goal, &dist_to_initial);
     priority_queue<Board, vector<Board>, Compare> frontier{comp};
     frontier.push(_initial);
     map<Board, Board> predecessor;
+    
+    unsigned nodes_traversed = 0;
     while (!frontier.empty()) {
+        
+        nodes_traversed++;
+        // cout << nodes_traversed << endl;
+
         Board cur = frontier.top();
         frontier.pop();
         if (cur == _goal) {
@@ -24,7 +31,7 @@ vector<Board> SolverAStar::solve() {
     return predToSolution(predecessor);
 }
 
-SolverAStar::Compare::Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial): 
+SolverAStar::Compare::Compare(const Board& initial, const Board& goal, unordered_map<Board, unsigned, BoardHash>* dist_to_initial): 
     _initial(initial), 
     _goal(goal), 
     _dist_to_initial(dist_to_initial) 

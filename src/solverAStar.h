@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include "board.h"
 #include "solver.h"
 
@@ -28,7 +30,7 @@ class SolverAStar : public Solver {
          * The distance map is designed be shared between multiple Compare instances, since
          * std::priority_queue creates a shallow copy of the comparator passed to it
         */
-        Compare(const Board& initial, const Board& goal, map<Board, unsigned>* dist_to_initial);
+        Compare(const Board& initial, const Board& goal, unordered_map<Board, unsigned, BoardHash>* dist_to_initial);
         /**
          * Compares the priority of two boards to see which one should be explored first
          * More specifically, this function compares d(a) + h(a) with d(b) + h(b),
@@ -54,7 +56,7 @@ class SolverAStar : public Solver {
         */
         Board _initial;
         Board _goal;
-        map<Board, unsigned>* _dist_to_initial;
+        unordered_map<Board, unsigned, BoardHash>* _dist_to_initial;
     };
 
     /**
