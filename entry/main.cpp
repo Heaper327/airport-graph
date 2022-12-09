@@ -9,15 +9,15 @@ void printSolution(const vector<Board>& solution);
 
 int main()
 {
-    Board initial(5);
+    Board initial(6);
     Board goal = initial;
-    goal.toggle(0, 0);
     goal.toggle(2, 2);
-    goal.toggle(0, 1);
-    goal.toggle(1, 0);
+    goal.toggle(0, 0);
+    goal.toggle(1, 1);
+    goal.toggle(0, 2);
 
-    // Solver solver{initial, goal};
-    SolverAStar solver = SolverAStar{"../tests/4x4-simple-game.txt"};
+    SolverAStar solver = SolverAStar{initial, goal};
+    // SolverAStar solver = SolverAStar{"../tests/4x4-simple-game.txt"};
     auto solution = solver.solve();
     printSolution(solution);
 }
