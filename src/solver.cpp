@@ -43,9 +43,9 @@ Solver::Solver(string filename) {
         for (unsigned col = 0; col < n; col++) {
             char bulb = line.at(col);
             if (bulb == '0') {
-                // do nothing
+                _initial.setBulb(row, col, false);
             } else if (bulb == '1') {
-                _initial.toggleOne(row, col);
+                _initial.setBulb(row, col, true);
             } else {
                 throw runtime_error("Boards contain invalid character. Only 0 and 1 are allowed in the boards");
             }
@@ -57,9 +57,9 @@ Solver::Solver(string filename) {
         for (unsigned col = 0; col < n; col++) {
             char bulb = line.at(col);
             if (bulb == '0') {
-                // do nothing
+                _goal.setBulb(row, col, false);
             } else if (bulb == '1') {
-                _goal.toggleOne(row, col);
+                _goal.setBulb(row, col, true);
             } else {
                 throw runtime_error("Boards contain invalid character. Only 0 and 1 are allowed in the boards");
             }

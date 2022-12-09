@@ -60,7 +60,6 @@ class Board {
     unsigned getSize() const;
     /**
      * Return the state of the light bulb at (row, col) in the board
-     * To modify the board use the toggle() function
      * 
      * @param row The row number of the light bulb
      * @param col The col number of the light bulb
@@ -107,10 +106,18 @@ class Board {
      * @return True if lhs < rhs, false otherwise
     */
     friend bool operator<(const Board& lhs, const Board& rhs);
-    /*
-    * Helper function for solver, toggle one bulb one time
+    /**
+     * Returns the hash value of this board
     */
-    void toggleOne(unsigned row, unsigned col);
+    size_t hash() const noexcept { return std::hash<vector<bool>>{}(_board); }
+    /**
+    * Sets the state of the light bulb at (row, col)
+    *
+    * @param row The row of the light bulb
+    * @param col The column of the light bulb
+    * @param value The new value of the light bulb
+    */
+    void setBulb(unsigned row, unsigned col, bool value);
 
     private:
     /**
@@ -122,6 +129,10 @@ class Board {
      * A value of true means a light bulb is on, and false means a light bulb is off
     */
     unsigned size;
-    vector<vector<bool>> _board;
+    vector<bool> _board;
 
+};
+
+struct BoardHash {
+    size_t operator()(const Board& board) const noexcept { return board.hash(); };
 };
