@@ -12,7 +12,7 @@
 using namespace cs225;
 using namespace std;
 
-TEST_CASE("Solving 3x3 game test, BFS", "[weight=10][part1]")
+TEST_CASE("Solving 3x3 game test, BFS", "[ids]")
 {
 	SolverIDS solver{"../tests/3x3-game.txt"};
 	vector<Board> solution = solver.solve();
@@ -31,7 +31,7 @@ TEST_CASE("Solving 3x3 game test, BFS", "[weight=10][part1]")
 	REQUIRE(solution == expected_solution);
 }
 
-TEST_CASE("Solving simple 4x4 game test, BFS", "[weight=10][part1]")
+TEST_CASE("Solving simple 4x4 game test, BFS", "[ids]")
 {
 	SolverIDS solver{"../tests/4x4-simple-game.txt"};
 	vector<Board> solution = solver.solve();
@@ -54,7 +54,7 @@ TEST_CASE("Solving simple 4x4 game test, BFS", "[weight=10][part1]")
 
  
 
-TEST_CASE("Solving 3x3 game test, IDS", "[weight=10][part1]")
+TEST_CASE("Solving 3x3 game test, IDS", "[ids]")
 {
 	SolverIDS solver{"../tests/3x3-game.txt"};
 	vector<Board> solution = solver.solve(100);
@@ -73,7 +73,7 @@ TEST_CASE("Solving 3x3 game test, IDS", "[weight=10][part1]")
 	REQUIRE(solution == expected_solution);
 }
 
-TEST_CASE("Solving simple 4x4 game test-idf", "[weight=10][part1]")
+TEST_CASE("Solving simple 4x4 game test-idf", "[ids]")
 {
 	SolverIDS solver{"../tests/4x4-simple-game.txt"};
 	vector<Board> solution = solver.solve(100);

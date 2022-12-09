@@ -12,7 +12,7 @@ using namespace cs225;
 using namespace std;
 
 
-TEST_CASE("Default constructor test", "[weight=10][part1]")
+TEST_CASE("Default constructor test", "[board]")
 {
 	Board board(5);
 	REQUIRE(board.getSize() == 5);
@@ -23,7 +23,7 @@ TEST_CASE("Default constructor test", "[weight=10][part1]")
 	}
 }
 
-TEST_CASE("Parametrized constructor test", "[weight=10][part1]")
+TEST_CASE("Parametrized constructor test", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
@@ -34,7 +34,7 @@ TEST_CASE("Parametrized constructor test", "[weight=10][part1]")
 	}
 }
 
-TEST_CASE("Copy constructor test", "[weight=10][part1]")
+TEST_CASE("Copy constructor test", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
@@ -42,7 +42,7 @@ TEST_CASE("Copy constructor test", "[weight=10][part1]")
 	REQUIRE(board == board2);
 }
 
-TEST_CASE("Copy assignment operator test", "[weight=10][part1]")
+TEST_CASE("Copy assignment operator test", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
@@ -51,7 +51,7 @@ TEST_CASE("Copy assignment operator test", "[weight=10][part1]")
 	REQUIRE(board == board2);
 }
 
-TEST_CASE("Equality test", "[weight=10][part1]")
+TEST_CASE("Equality test", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
@@ -59,7 +59,7 @@ TEST_CASE("Equality test", "[weight=10][part1]")
 	REQUIRE(board == board2);
 }
 
-TEST_CASE("Equality test w/ toggle", "[weight=10][part1]")
+TEST_CASE("Equality test w/ toggle", "[board]")
 {
 	vector<vector<bool>> input = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
 	Board board(input);
@@ -68,7 +68,7 @@ TEST_CASE("Equality test w/ toggle", "[weight=10][part1]")
 	REQUIRE(board == board2);
 }
 
-TEST_CASE("Inequality test simple", "[weight=10][part1]")
+TEST_CASE("Inequality test simple", "[board]")
 {
 	vector<vector<bool>> input = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
 	vector<vector<bool>> input2 = {{1, 1, 1}, {1, 0, 1}, {1, 1, 1}};
@@ -77,7 +77,7 @@ TEST_CASE("Inequality test simple", "[weight=10][part1]")
 	REQUIRE(board != board2);
 }
 
-TEST_CASE("Inequality test different size", "[weight=10][part1]")
+TEST_CASE("Inequality test different size", "[board]")
 {
 	vector<vector<bool>> input = {{1, 1, 1}, {1, 1, 1}, {1, 1, 1}};
 	Board board(input);
@@ -85,7 +85,7 @@ TEST_CASE("Inequality test different size", "[weight=10][part1]")
 	REQUIRE(board != board2);
 }
 
-TEST_CASE("Toggle test simple", "[weight=10][part1]")
+TEST_CASE("Toggle test simple", "[board]")
 {
 	vector<vector<bool>> before = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	vector<vector<bool>> after = {{1, 0, 1}, {0, 1, 0}, {1, 0, 1}};
@@ -95,7 +95,7 @@ TEST_CASE("Toggle test simple", "[weight=10][part1]")
 	REQUIRE(board_before == board_after);
 }
 
-TEST_CASE("Repeated toggle test", "[weight=10][part1]")
+TEST_CASE("Repeated toggle test", "[board]")
 {
 	vector<vector<bool>> before = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board_before(before);
@@ -105,27 +105,27 @@ TEST_CASE("Repeated toggle test", "[weight=10][part1]")
 	REQUIRE(board_before == board_after);
 }
 
-TEST_CASE("Completely out of bound toggle test", "[weight=10][part1]")
+TEST_CASE("Completely out of bound toggle test", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
 	REQUIRE_THROWS(board.toggle(5, 5));
 }
 
-TEST_CASE("Partially out of bound toggle test", "[weight=10][part1]")
+TEST_CASE("Partially out of bound toggle test", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0}, {1, 0, 1}, {0, 1, 0}};
 	Board board(input);
 	REQUIRE_THROWS(board.toggle(2, 2));
 }
 
-TEST_CASE("Get size test", "[weight=10][part1]")
+TEST_CASE("Get size test", "[board]")
 {
 	Board board(6);
 	REQUIRE(board.getSize() == 6);
 }
 
-TEST_CASE("Subtraction test, identical boards", "[weight=10][part1]")
+TEST_CASE("Subtraction test, identical boards", "[board]")
 {
 	vector<vector<bool>> input = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	Board board1(input);
@@ -133,7 +133,7 @@ TEST_CASE("Subtraction test, identical boards", "[weight=10][part1]")
 	REQUIRE(board1 - board1 == diff);
 }
 
-TEST_CASE("Subtraction test, different boards", "[weight=10][part1]")
+TEST_CASE("Subtraction test, different boards", "[board]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	vector<vector<bool>> input2 = {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {1, 1, 1, 1}};
@@ -144,7 +144,7 @@ TEST_CASE("Subtraction test, different boards", "[weight=10][part1]")
 	REQUIRE(board1 - board2 == diff);
 }
 
-TEST_CASE("Subtraction test, symmetry", "[weight=10][part1]")
+TEST_CASE("Subtraction test, symmetry", "[board]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	vector<vector<bool>> input2 = {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {1, 1, 1, 1}};
@@ -153,14 +153,14 @@ TEST_CASE("Subtraction test, symmetry", "[weight=10][part1]")
 	REQUIRE(board1 - board2 == board2 - board1);
 }
 
-TEST_CASE("Less than test, anti-reflexive", "[weight=10][part1]")
+TEST_CASE("Less than test, anti-reflexive", "[board]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	Board board1(input1);
 	REQUIRE(!(board1 < board1));
 }
 
-TEST_CASE("Less than test, anti-symmetry", "[weight=10][part1]")
+TEST_CASE("Less than test, anti-symmetry", "[board]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	vector<vector<bool>> input2 = {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {1, 1, 1, 1}};
@@ -171,7 +171,7 @@ TEST_CASE("Less than test, anti-symmetry", "[weight=10][part1]")
 
 // TODO: Find ways to test transitivity property of operator<
 
-TEST_CASE("Subtraction test, different size", "[weight=10][part1]")
+TEST_CASE("Subtraction test, different size", "[board]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	Board board1(input1);
@@ -179,14 +179,14 @@ TEST_CASE("Subtraction test, different size", "[weight=10][part1]")
 	REQUIRE_THROWS(board1 - board2);
 }
 
-TEST_CASE("Print test simple", "[weight=10][part1]")
+TEST_CASE("Print test simple", "[board]")
 {
 	Board board1(3);
 	REQUIRE(board1.print() == "⚫⚫⚫\n⚫⚫⚫\n⚫⚫⚫");
 }
 
 
-TEST_CASE("Print test pattern", "[weight=10][part1]")
+TEST_CASE("Print test pattern", "[board]")
 {
 	vector<vector<bool>> input1 = {{0, 1, 0, 1}, {1, 0, 1, 0}, {0, 1, 0, 1}, {1, 0, 1, 0}};
 	Board board1(input1);

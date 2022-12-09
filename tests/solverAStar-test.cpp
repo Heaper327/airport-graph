@@ -12,7 +12,7 @@
 using namespace cs225;
 using namespace std;
 
-TEST_CASE("Board constructor test", "[weight=10][part1]")
+TEST_CASE("Board constructor test", "[astar]")
 {
 	Board initial = Board({{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
 	Board goal = Board({{1, 1, 1}, {1, 1, 1}, {1, 1, 1}});
@@ -21,7 +21,7 @@ TEST_CASE("Board constructor test", "[weight=10][part1]")
 	REQUIRE(solver.getGoal() == goal);
 }
 
-TEST_CASE("Board constructor test, different size", "[weight=10][part1]")
+TEST_CASE("Board constructor test, different size", "[astar]")
 {
 	Board initial = Board({{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
 	Board goal = Board({{1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}, {1, 1, 1, 1}});
@@ -29,7 +29,7 @@ TEST_CASE("Board constructor test, different size", "[weight=10][part1]")
 }
 
 
-TEST_CASE("File constructor test", "[weight=10][part1]")
+TEST_CASE("File constructor test", "[astar]")
 {
 	SolverAStar solver{"../tests/3x3-game.txt"};
 	Board expected_initial = Board({{0, 0, 0}, {0, 0, 0}, {0, 0, 0}});
@@ -38,27 +38,27 @@ TEST_CASE("File constructor test", "[weight=10][part1]")
 	REQUIRE(solver.getGoal() == expected_goal);
 }
 
-TEST_CASE("File constructor test, malformed board", "[weight=10][part1]")
+TEST_CASE("File constructor test, malformed board", "[astar]")
 {
 	REQUIRE_THROWS(SolverAStar{"../tests/4x4-malformed-game.txt"});
 }
 
-TEST_CASE("File constructor test, missing row", "[weight=10][part1]")
+TEST_CASE("File constructor test, missing row", "[astar]")
 {
 	REQUIRE_THROWS(SolverAStar{"../tests/4x4-missing-row-game.txt"});
 }
 
-TEST_CASE("File constructor test, invalid char", "[weight=10][part1]")
+TEST_CASE("File constructor test, invalid char", "[astar]")
 {
 	REQUIRE_THROWS(SolverAStar{"../tests/4x4-invalid-char-game.txt"});
 }
 
-TEST_CASE("File constructor test, incorrect dimension", "[weight=10][part1]")
+TEST_CASE("File constructor test, incorrect dimension", "[astar]")
 {
 	REQUIRE_THROWS(SolverAStar{"../tests/4x4-n-mismatch-game.txt"});
 }
 
-TEST_CASE("Solving 3x3 game test", "[weight=10][part1]")
+TEST_CASE("Solving 3x3 game test", "[astar]")
 {
 	SolverAStar solver{"../tests/3x3-game.txt"};
 	vector<Board> solution = solver.solve();
@@ -77,7 +77,7 @@ TEST_CASE("Solving 3x3 game test", "[weight=10][part1]")
 	REQUIRE(solution == expected_solution);
 }
 
-TEST_CASE("Solving simple 4x4 game test", "[weight=10][part1]")
+TEST_CASE("Solving simple 4x4 game test", "[astar]")
 {
 	SolverAStar solver{"../tests/4x4-simple-game.txt"};
 	vector<Board> solution = solver.solve();
