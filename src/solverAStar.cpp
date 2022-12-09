@@ -28,7 +28,13 @@ vector<Board> SolverAStar::solve() {
             }
         }
     }
-    return predToSolution(predecessor);
+    vector<Board> solution = predToSolution(predecessor);
+    // effective branching factor = N ^ (1/d)
+    // N = total #nodes searched
+    // d = solution depth
+    cout << "Total node traversed: " << nodes_traversed << endl;
+    cout << "Depth of solution: " << solution.size() - 1 << endl;
+    return solution;
 }
 
 SolverAStar::Compare::Compare(const Board& initial, const Board& goal, unordered_map<Board, unsigned, BoardHash>* dist_to_initial): 
@@ -40,7 +46,7 @@ SolverAStar::Compare::Compare(const Board& initial, const Board& goal, unordered
 }
 
 bool SolverAStar::Compare::operator()(const Board& a, const Board& b) const {
-    return _dist_to_initial->at(a) + hammingDist(a, _goal) > _dist_to_initial->at(b) + hammingDist(b, _goal);
+    return _dist_to_initial->at(a) + hammingDist(a) > _dist_to_initial->at(b) + hammingDist(b);
 }
 
 bool SolverAStar::Compare::updateDist(const Board& to_update, const Board& shortcut) {
@@ -61,13 +67,29 @@ bool SolverAStar::Compare::updateDist(const Board& to_update, const Board& short
     return false;
 }
 
-unsigned SolverAStar::hammingDist(const Board& a, const Board& b) {
-    unsigned dist = 0; 
-    for (size_t row = 0; row < a.getSize(); row++) {
-        for (size_t col = 0; col < a.getSize(); col++) {
-            if (a.getBulb(row, col) != b.getBulb(row, col))
-                dist++;
+unsigned SolverAStar::Compare::hammingDist(const Board& board) const {
+    // unsigned dist = 0; 
+    // for (size_t row = 0; row < a.getSize(); row++) {
+    //     for (size_t col = 0; col < a.getSize(); col++) {
+    //         dist += a.getBulb(row, col) != b.getBulb(row, col);
+    //     }
+    // }
+    // return dist;
+    static unordered_map<Board, unsigned, BoardHash> memo;
+    static unsigned num_hits = 0;
+    static unsigned num_misses = 0;
+    if (memo.find(board) == memo.end()) {
+        unsigned dist = 0; 
+        for (size_t row = 0; row < board.getSize(); row++) {
+            for (size_t col = 0; col < board.getSize(); col++) {
+                dist += board.getBulb(row, col) != _goal.getBulb(row, col);
+            }
         }
+        memo.insert({board, dist});
+        num_misses++;
+    } else {
+        num_hits++;
     }
-    return dist;
+    cout << "Hits: " << num_hits << "\n" << "Misses: " << num_misses << "\n";
+    return memo.at(board);
 }

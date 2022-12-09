@@ -49,6 +49,19 @@ class SolverAStar : public Solver {
         */
         bool updateDist(const Board& to_update, const Board& shortcut);
 
+        /**
+         * Return the hamming distance between board and goal. The hamming distance is defined
+         * As the number of light bulbs whose state differ between the two boards
+         * 
+         * e.g. The hamming distance between the following two boards is 2
+         * 000 110
+         * 111 111
+         * 000 000
+         * 
+         * @return The estimated distance
+        */
+        unsigned hammingDist(const Board& board) const;
+
         private:
         /**
          * Distance map and goal board must be stored in compare
@@ -58,17 +71,4 @@ class SolverAStar : public Solver {
         Board _goal;
         unordered_map<Board, unsigned, BoardHash>* _dist_to_initial;
     };
-
-    /**
-     * Return the hamming distance between two boards a and b. The hamming distance is defined
-     * As the number of light bulbs whose state differ between the two boards
-     * 
-     * e.g. The hamming distance between the following two boards is 2
-     * 000 110
-     * 111 111
-     * 000 000
-     * 
-     * @return The estimated distance
-    */
-    static unsigned hammingDist(const Board& a, const Board& b);
 };
