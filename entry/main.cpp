@@ -1,11 +1,11 @@
 #include <iostream>
 #include "board.h"
-#include "solver.h"
+#include "solverAStar.h"
 #include "cs225/PNG.h"
 
 using namespace std;
 
-void printSolution(const list<Board>& solution);
+void printSolution(const vector<Board>& solution);
 
 int main()
 {
@@ -17,12 +17,12 @@ int main()
     goal.toggle(1, 0);
 
     // Solver solver{initial, goal};
-    Solver solver{"../tests/4x4-simple-game.txt"};
-    auto solution = solver.solveAStar();
+    SolverAStar solver = SolverAStar{"../tests/4x4-simple-game.txt"};
+    auto solution = solver.solve();
     printSolution(solution);
 }
 
-void printSolution(const list<Board>& solution) {
+void printSolution(const vector<Board>& solution) {
     for (const auto& step : solution) {
         cout << "==========\n";
         cout << step.print() << "\n";
