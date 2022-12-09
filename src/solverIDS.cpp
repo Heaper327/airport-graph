@@ -33,40 +33,31 @@ vector<Board> SolverIDS::solve() {
 }
 
 
-bool SolverIDS::limited_dfs(int max_depth, int cur_depth,  const Board& cur_stat, const Board& target_stat,  unordered_map<string, int>& visited, map<Board, Board>& predecessor) {
-
-    if (cur_depth > max_depth) {
-        return false;
-    }
-    else if (visited[cur_stat.print()] == 1) {
-        return false;
-    }
-    else {
-        visited[cur_stat.print()] = 1;
-        if (cur_stat == target_stat) {
+bool SolverIDS::search(unsigned remaining_depth, vector<Board>& path) {
+    Board& cur = path.back();
+    if (remaining_depth == 0) {
+        // we only check if goal is reached when we exhaust our depth
+        // because if goal is at a lower depth, it would have been found by previous iterations already
+        if (cur == _goal) {
             return true;
         }
-        else {
-            for (const auto& neighbor: getNeighbors(cur_stat)) {
-                predecessor[neighbor] =cur_stat;
-                if (limited_dfs(max_depth, cur_depth + 1, neighbor, target_stat, visited, predecessor)) { 
-                    return true;
-                }        
-            }
-            return false;
-        }    
+        return false;
     }
-
+    for (const auto& neighbor: getNeighbors(cur)) {
+        path.push_back(neighbor);
+        if (search(remaining_depth - 1, path)) { 
+            return true;
+        }
+        path.pop_back();
+    }
+    return false;  
 }
 
 vector<Board> SolverIDS::solve(int max_search_depth) { 
-    bool find = false;
     for(int search_depth = 0; search_depth < max_search_depth; search_depth++) {
-        map<Board, Board> predecessor;
-        unordered_map<string, int> visited;
-        find = this->limited_dfs(search_depth, 0, _initial, _goal, visited, predecessor);
-        if (find) {
-            return predToSolution(predecessor);
+        vector<Board> path = {_initial};
+        if (search(search_depth, path)) {
+            return path;
         }
     }
     return vector<Board>{};
