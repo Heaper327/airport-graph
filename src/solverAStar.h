@@ -5,6 +5,8 @@
 #include "board.h"
 #include "solver.h"
 
+using BoardMap = unordered_map<Board, unsigned, BoardHash>; 
+
 class SolverAStar : public Solver {
     public:
     // explicitly use parent class' constructors
@@ -19,20 +21,31 @@ class SolverAStar : public Solver {
     vector<Board> solve() override;
 
     private:
-    // TODO: calculating heuristics takes O(n^2) time, should we memoize it instead?
+    /**
+     * Return the hamming distance between board and goal. The hamming distance is defined
+     * As the number of light bulbs whose state differ between the two boards
+     * 
+     * e.g. The hamming distance between the following two boards is 2
+     * 000 110
+     * 111 111
+     * 000 000
+     * 
+     * @return The estimated distance
+    */
+    inline unsigned hammingDist(const Board& board) const;
     /**
      * Comparator classed used by the priority queue of the A* solve method
     */
     class Compare{
         public:
         /**
-         * Parametrized constructor that accepts an initial board, a goal board, and a pointer
-         * to an external distance map
+         * Parametrized constructor that accepts an initial board, a goal board, a pointer
+         * to an external distance map, and a pointer to an external heuristic map
          * 
-         * The distance map is designed be shared between multiple Compare instances, since
+         * The two maps are designed be shared between multiple Compare instances, since
          * std::priority_queue creates a shallow copy of the comparator passed to it
         */
-        Compare(const Board& initial, const Board& goal, unordered_map<Board, unsigned, BoardHash>* dist_to_initial);
+        Compare(const Board& initial, const Board& goal, BoardMap* dist, BoardMap* heuristic);
         /**
          * Compares the priority of two boards to see which one should be explored first
          * More specifically, this function compares d(a) + h(a) with d(b) + h(b),
@@ -51,19 +64,6 @@ class SolverAStar : public Solver {
         */
         bool updateDist(const Board& to_update, const Board& shortcut);
 
-        /**
-         * Return the hamming distance between board and goal. The hamming distance is defined
-         * As the number of light bulbs whose state differ between the two boards
-         * 
-         * e.g. The hamming distance between the following two boards is 2
-         * 000 110
-         * 111 111
-         * 000 000
-         * 
-         * @return The estimated distance
-        */
-        unsigned hammingDist(const Board& board) const;
-
         private:
         /**
          * Distance map and goal board must be stored in compare
@@ -71,6 +71,7 @@ class SolverAStar : public Solver {
         */
         Board _initial;
         Board _goal;
-        unordered_map<Board, unsigned, BoardHash>* _dist_to_initial;
+        BoardMap* _dist;
+        BoardMap* _heuristic;
     };
 };
