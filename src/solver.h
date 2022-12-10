@@ -6,6 +6,7 @@
 #include <stdexcept>
 #include <queue>
 #include <map>
+#include <unordered_map>
 #include <algorithm>
 
 #include "board.h"
@@ -99,5 +100,5 @@ class Solver {
      * part of the path from initial to goal board
      * @return A solution to the puzzle. Empty vector if no solution can be found from the predecessor graph
     */
-    vector<Board> predToSolution(const map<Board, Board>& pred) const;
+    vector<Board> predToSolution(const unordered_map<Board, Board, BoardHash>& pred) const;
 };

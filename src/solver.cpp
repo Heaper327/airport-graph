@@ -79,7 +79,7 @@ Solver::Solver(const Solver& other) {
     _goal = other._goal;
 }
 
-vector<Board> Solver::predToSolution(const map<Board, Board>& pred) const {
+vector<Board> Solver::predToSolution(const unordered_map<Board, Board, BoardHash>& pred) const {
     vector<Board> solution;
     Board cur = _goal;
     while (pred.find(cur) != pred.end()) {  

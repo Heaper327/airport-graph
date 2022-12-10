@@ -7,7 +7,7 @@ vector<Board> SolverAStar::solve() {
     Compare comp = Compare(_initial, _goal, &dist_to_initial);
     priority_queue<Board, vector<Board>, Compare> frontier{comp};
     frontier.push(_initial);
-    map<Board, Board> predecessor;
+    unordered_map<Board, Board, BoardHash> pred;
     
     unsigned nodes_traversed = 0;
     while (!frontier.empty()) {
@@ -23,17 +23,17 @@ vector<Board> SolverAStar::solve() {
         for (const auto& neighbor: getNeighbors(cur)) {
             // since cur is in frontier, its distance is guaranteed to be defined
             if (comp.updateDist(neighbor, cur)) {
-                predecessor[neighbor] = cur;
+                pred[neighbor] = cur;
                 frontier.push(neighbor);
             }
         }
     }
-    vector<Board> solution = predToSolution(predecessor);
+    vector<Board> solution = predToSolution(pred);
     // effective branching factor = N ^ (1/d)
     // N = total #nodes searched
     // d = solution depth
-    cout << "Total node traversed: " << nodes_traversed << endl;
-    cout << "Depth of solution: " << solution.size() - 1 << endl;
+    cout << "Total node traversed: " << nodes_traversed << "\n";
+    cout << "Solution distance: " << solution.size() - 1 << "\n";
     return solution;
 }
 
@@ -79,7 +79,7 @@ unsigned SolverAStar::Compare::hammingDist(const Board& board) const {
             }
         }
         memo.insert({board, dist});
-        // num_misses++;
+        //num_misses++;
     } else {
         // num_hits++;
     }
