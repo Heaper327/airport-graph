@@ -1,7 +1,7 @@
 #include <vector>
 
-#include "Animation.h"
-#include "PNG.h"
+#include "cs225/Animation.h"
+#include "cs225/PNG.h"
 #include "board.h"
 
 using namespace std;
