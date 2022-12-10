@@ -63,6 +63,14 @@ class Solver {
      * Getter method that returns the target board
     */
     Board getGoal() const { return _goal; }
+    /**
+     * Protected helper that find all neighbors of a board. That is, all boards that can be reached
+     * by performing one toggle operation on the given board
+     * 
+     * @param board the board whose neighbors are to be found
+     * @return a list of boards that are neighbors to the given board
+    */
+    static vector<Board> getNeighbors(const Board& board);
 
     /**
      * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
@@ -81,15 +89,6 @@ class Solver {
     */
     Board _initial;
     Board _goal;
-
-    /**
-     * Protected helper that find all neighbors of a board. That is, all boards that can be reached
-     * by performing one toggle operation on the given board
-     * 
-     * @param board the board whose neighbors are to be found
-     * @return a list of boards that are neighbors to the given board
-    */
-    static vector<Board> getNeighbors(const Board& board);
 
     /**
      * Protected helper that converts a predecessor map produced by graph traversal to a solution to
