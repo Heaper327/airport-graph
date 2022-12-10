@@ -6,6 +6,10 @@
 Animation animateSolution(vector<Board> solution) {
     Animation animation;
     for (size_t i = 0; i < solution.size(); i++) {
+        //add four frames at one time to decrease the speed of switching images.
+        animation.addFrame(*(boardToPNG(solution[i])));
+        animation.addFrame(*(boardToPNG(solution[i])));
+        animation.addFrame(*(boardToPNG(solution[i])));
         animation.addFrame(*(boardToPNG(solution[i])));
     }
     return animation;
