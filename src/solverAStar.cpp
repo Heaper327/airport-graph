@@ -68,16 +68,9 @@ bool SolverAStar::Compare::updateDist(const Board& to_update, const Board& short
 }
 
 unsigned SolverAStar::Compare::hammingDist(const Board& board) const {
-    // unsigned dist = 0; 
-    // for (size_t row = 0; row < a.getSize(); row++) {
-    //     for (size_t col = 0; col < a.getSize(); col++) {
-    //         dist += a.getBulb(row, col) != b.getBulb(row, col);
-    //     }
-    // }
-    // return dist;
     static unordered_map<Board, unsigned, BoardHash> memo;
-    static unsigned num_hits = 0;
-    static unsigned num_misses = 0;
+    // static unsigned num_hits = 0;
+    // static unsigned num_misses = 0;
     if (memo.find(board) == memo.end()) {
         unsigned dist = 0; 
         for (size_t row = 0; row < board.getSize(); row++) {
@@ -86,10 +79,10 @@ unsigned SolverAStar::Compare::hammingDist(const Board& board) const {
             }
         }
         memo.insert({board, dist});
-        num_misses++;
+        // num_misses++;
     } else {
-        num_hits++;
+        // num_hits++;
     }
-    cout << "Hits: " << num_hits << "\n" << "Misses: " << num_misses << "\n";
+    // cout << "Hits: " << num_hits << "\n" << "Misses: " << num_misses << "\n";
     return memo.at(board);
 }
