@@ -2,34 +2,9 @@
 using namespace std;
 
 vector<Board> SolverIDS::solve() {
-    queue<Board> q;
-    q.push(_initial);
-    map<Board, Board> predecessor;
-    unordered_map<string, int> visited;
-    visited[_initial.print()] = 1;
-    bool isfind = false;
-    while (!q.empty()) {
-        int q_size = q.size();
-        for (int i = 0; i < q_size; i++) {
-            Board cur = q.front();
-            if (cur == _goal) {
-                isfind = true;
-                break;
-            }
-            for (const auto& neighbor: getNeighbors(cur)) {
-                if (visited.find(neighbor.print()) == visited.end()) {
-                    q.push(neighbor);
-                    predecessor[neighbor] =cur;
-                    visited[neighbor.print()] = 1;
-                }
-            }
-            q.pop();
-        }
-        if (isfind) {
-            break;
-        }
-    }
-    return predToSolution(predecessor);
+    // The maximum depth of a reachable board is (n - 2)^2
+    // Since that is the total number of possible toggles
+    return solve(_initial.getSize() * _initial.getSize());
 }
 
 

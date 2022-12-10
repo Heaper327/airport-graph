@@ -12,7 +12,9 @@ class SolverIDS : public Solver {
     using Solver::operator=;
     /**
      * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
-     * to the goal board - using BFS
+     * to the goal board - using DFS
+     * 
+     * Unlike the parametrized solve(), the search depth is practically unlimited here
      * 
      * @return A list of boards, each representing a step in the solution
     */
