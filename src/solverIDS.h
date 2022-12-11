@@ -10,6 +10,7 @@ class SolverIDS : public Solver {
     // explicitly inherit constructors
     using Solver::Solver;
     using Solver::operator=;
+    ~SolverIDS() = default;
     /**
      * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
      * to the goal board - using DFS

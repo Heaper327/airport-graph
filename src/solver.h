@@ -18,7 +18,7 @@ class Solver {
      * Default constructor that creates a 5x5 game whose initial state is all off
      * and whose goal state is all on
     */
-    Solver() = delete;
+    Solver() = default;
     /**
      * Parametrized constructor that loads a game from a formatted text file
      * The first row of the file will contain n, the size of the board
@@ -53,9 +53,34 @@ class Solver {
     */
     Solver& operator=(const Solver& other);
     /**
+     * Loads a game from a given initial and goal board into an existing solver
+     * 
+     * Throws an exception if the two boards are of different dimensions
+    */
+    void loadFromBoards(const Board& initial, const Board& goal);
+    /**
+     * Loads a game from a formatted text file
+     * The first row of the file will contain n, the size of the board
+     * The next 2n rows will contain the initial board and the goal board, where
+     * 0 represents an off light bulb and 1 represents an on light bulb
+     * 
+     * e.g.
+     * 3
+     * 000
+     * 000
+     * 000
+     * 111
+     * 111
+     * 111
+     * 
+     * An exception will be thrown if n < 3, the boards are malformed (incorrect number of rows or columns),
+     * or invalid characters are found
+    */
+    void loadFromFile(string filename);
+    /**
      * Default destructor
     */
-    ~Solver() = default;
+    virtual ~Solver() = default;
 
     /**
      * Getter method that returns the initial board

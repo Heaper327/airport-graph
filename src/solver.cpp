@@ -1,31 +1,23 @@
 #include "solver.h"
 using namespace std;
 
-Solver::Solver(const Board& initial, const Board& goal): _initial(initial), _goal(goal) {
-    if (initial.getSize() != goal.getSize()) {
-        throw runtime_error("Initial and goal boards have different dimensions");
-    }
-}
-
-vector<Board> Solver::getNeighbors(const Board& board) {
-    size_t size = board.getSize();
-    if (size < 3) {
-        throw runtime_error("wrong size");
-    }
-    size_t toggle_bound = size - 2;
-    vector<Board> to_return(toggle_bound * toggle_bound);
-    size_t idx = 0;
-    for (size_t i = 0; i < toggle_bound; i++) {
-        for (size_t j = 0; j < toggle_bound ; j++ ) {
-            to_return.at(idx) = board;
-            to_return.at(idx).toggle(i, j);
-            idx++;
-        }
-    }
-    return to_return;
+Solver::Solver(const Board& initial, const Board& goal) {
+    loadFromBoards(initial, goal);
 }
 
 Solver::Solver(string filename) {
+    loadFromFile(filename);
+}
+
+void Solver::loadFromBoards(const Board& initial, const Board& goal) {
+    if (initial.getSize() != goal.getSize()) {
+        throw runtime_error("Initial and goal boards have different dimensions");
+    }
+    _initial = initial;
+    _goal = goal;
+}
+
+void Solver::loadFromFile(string filename) {
     ifstream file(filename);
     string line;
     // Read and verify size of the boards
@@ -77,6 +69,25 @@ Solver& Solver::operator=(const Solver& other) {
 Solver::Solver(const Solver& other) {
     _initial = other._initial;
     _goal = other._goal;
+}
+
+
+vector<Board> Solver::getNeighbors(const Board& board) {
+    size_t size = board.getSize();
+    if (size < 3) {
+        throw runtime_error("wrong size");
+    }
+    size_t toggle_bound = size - 2;
+    vector<Board> to_return(toggle_bound * toggle_bound);
+    size_t idx = 0;
+    for (size_t i = 0; i < toggle_bound; i++) {
+        for (size_t j = 0; j < toggle_bound ; j++ ) {
+            to_return.at(idx) = board;
+            to_return.at(idx).toggle(i, j);
+            idx++;
+        }
+    }
+    return to_return;
 }
 
 vector<Board> Solver::predToSolution(const unordered_map<Board, Board, BoardHash>& pred) const {

@@ -12,6 +12,7 @@ class SolverAStar : public Solver {
     // explicitly use parent class' constructors
     using Solver::Solver;
     using Solver::operator=;
+    ~SolverAStar() = default;
     /**
      * Finds a solution to the game - a finite sequence of toggles that transforms the initial board
      * to the goal board - using A* search algorithm
