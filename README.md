@@ -13,10 +13,10 @@ Algorithm:
   * A Star
 
 ## Organization
-  ### - Root Folder
-    * entry
-    * lib
-    * src
-    * tests
+  ### Root Folder
+    - entry: location of main.cpp
+    - lib: Imported library
+    - src: Specific code we 
+    - tests:
 
 
