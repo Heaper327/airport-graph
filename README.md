@@ -12,11 +12,10 @@ Algorithm:
   * Breadth-First Search （BFS）
   * A Star
 
-## Organization
-  ### Root Folder
-    - entry: location of main.cpp
-    - lib: Imported library
-    - src: Specific code we 
-    - tests:
+## Root Folder
+  * entry: location of main.cpp
+  * lib: Imported library
+  * src: Specific code we 
+  * tests:
 
 
