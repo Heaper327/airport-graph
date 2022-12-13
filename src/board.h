@@ -121,9 +121,9 @@ class Board {
 
     private:
     /**
-     * This 2d vector represents the state of the nxn grid of light bulbs in row-major order
+     * This boolean vector represents the state of the nxn grid of light bulbs in row-major order
      * 
-     * _board[n][m] represents the state of the light bulb at the n-th row and m-th column, where
+     * _board[n * size + m] represents the state of the light bulb at the n-th row and m-th column, where
      * row 0 is the top-most row and column 0 is the left-most column
      * 
      * A value of true means a light bulb is on, and false means a light bulb is off
@@ -133,6 +133,9 @@ class Board {
 
 };
 
+/**
+ * Callable struct used by hash tables to store Boards
+*/
 struct BoardHash {
     size_t operator()(const Board& board) const noexcept { return board.hash(); };
 };

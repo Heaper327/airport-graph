@@ -55,15 +55,6 @@ class SolverAStar : public Solver {
          * @return true if b should be explored before a, and false otherwise
         */
         bool operator()(const Board& a, const Board& b) const;
-        /**
-         * Try to update the distance to origin of to_update by going through shortcut
-         * Assumes that shortcut is a neighbor of to_update
-         * 
-         * @param to_update The board whose distance to origin is to be updated
-         * @param shortcut The board that we try to travel through to get to to_update
-         * @return true if to_update's distance is reduced, false otherwise
-        */
-        bool updateDist(const Board& to_update, const Board& shortcut);
 
         private:
         /**

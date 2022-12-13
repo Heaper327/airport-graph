@@ -15,8 +15,6 @@ vector<Board> SolverAStar::solve() {
 
     while (!frontier.empty()) {        
         nodes_traversed++;
-        // cout << nodes_traversed << endl;
-
         Board cur = frontier.top();
         frontier.pop();
         if (cur == _goal) {
@@ -36,10 +34,6 @@ vector<Board> SolverAStar::solve() {
                 frontier.push(neighbor);
                 pred[neighbor] = cur;
             }
-            // if (comp.updateDist(neighbor, cur)) {
-            //     frontier.push(neighbor);
-            //     pred[neighbor] = cur;
-            // }
         }
     }
     vector<Board> solution = predToSolution(pred);
@@ -69,24 +63,4 @@ inline unsigned SolverAStar::hammingDist(const Board& board) const {
         }
     }
     return dist;
-}
-
-
-bool SolverAStar::Compare::updateDist(const Board& to_update, const Board& shortcut) {
-    /**
-     * The distance between two adjacent boards is set to 9 to make hammingDist a consistent heuristic,
-     * since the hamming distance between two adjacent boards is guaranteed to be <= 9
-    */
-    const unsigned kAdjacentDist = 9;
-    unsigned new_dist = _dist->at(shortcut) + kAdjacentDist;
-    // if to_update's distance is undefined yet
-    if (_dist->find(to_update) == _dist->end()) {
-        _dist->insert({to_update, new_dist});
-        return true;
-    } else if (new_dist < _dist->at(to_update)) {
-        cout << "Found a shortcut, updating distance...";
-        _dist->at(to_update) = new_dist;
-        return true;
-    }
-    return false;
 }

@@ -64,6 +64,16 @@ TEST_CASE("Traversal termination test", "[traversal]")
 	}
 }
 
+TEST_CASE("Node count test", "[traversal]")
+{
+	Board initial({{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}});
+	Traversal traversal(initial);
+	while (!traversal.end()) {
+		++traversal;
+	}
+	REQUIRE(traversal.getNumVisited() == 16);
+}
+
 TEST_CASE("Depth test", "[traversal]")
 {
 	Board initial({{0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}});
