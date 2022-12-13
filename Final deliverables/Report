@@ -1,1 +1,71 @@
 
+***output and correctness of each algorithm:***
+
+*1). summary of the algorithms*:
+
+We have implemented four graph algorithms, including three solvers and one traversal: A* solver, IDS solver, BFS solver, and BFS traversal. The solvers accept a starting board and an end board, and outputs a solution - a path between the two, if it exists. The visualized output of the solvers can be seen here (all three use the same output format):
+
+https://imgur.com/a/oQOs7S3
+
+Each frame represents a step in the discovered solution. If the puzzle is not solvable, an empty solution will be returned.
+
+The traversal, on the other hand, traverses the game graph indescriminately starting from a given board, and collects information about the structure of the graph. The following is a sample output:
+```
+Size of game: 6
+Number of nodes at depth 0: 1
+Number of nodes at depth 1: 16
+Number of nodes at depth 2: 120
+Number of nodes at depth 3: 560
+Number of nodes at depth 4: 1820
+Number of nodes at depth 5: 4368
+Number of nodes at depth 6: 8008
+Number of nodes at depth 7: 11440
+Number of nodes at depth 8: 12870
+Number of nodes at depth 9: 11440
+Number of nodes at depth 10: 8008
+Number of nodes at depth 11: 4368
+Number of nodes at depth 12: 1820
+Number of nodes at depth 13: 560
+Number of nodes at depth 14: 120
+Number of nodes at depth 15: 16
+Number of nodes at depth 16: 1
+Total number of nodes: 65536
+```
+
+All four algorithms, as we have verified, run correctly and produce the expected outputs. We would discuss the performance of these algorithms in the next section.
+
+In addition to these, we also implemented our own visualization algorithm based on the CS 225 PNG and animation library, which primarily consists of two functions:
+
+boardToPNG: Takes in a board and converts it into a PNG file.
+
+animateSolution: Takes in a solution, which is a vector of boards, and then animates the solution.
+
+The gif above was created using this algorithm.
+
+*2). Performance
+
+The performance difference between the algorithms (and their time & space complexity in general) is the main highlight of this project.
+
+We will start with the BST solver / traversal. We found this algorithm to be surprisingly fast - in fact, it is the fast out of all three solvers. Because of our knowledge of the structure of the game graph (see conclusion section for details), we know that for a n by n board, there are in total (n-2)^2 toggles, which we will denote m from now on. With a solution depth of d, BST needs to traverse at most $\sum_{i = 0}^{d}{m\choose i}$ nodes, or $O(2^m)=O(2^{n^2})$ nodes by pascel's identity. Further, for each node traversed, a constant amount of work is done since we are accessing hash tables and a queue. Thus, the total time complexity is $O(2^{n^2})$ - not bad by graph traversal standard. Memory wise however, $O(n^2 \cdot 2^{n^2})$ ($n^2$ per board) is not ideal. We have encountered several memory overflows during the course of developmenet due to this algorithm.
+
+A* solver, on the other hand, is surprisingly slow. Because of the nature of heuristic guided algorithms, it is hard to precisely calculate the number of nodes it will traverse. However, since we found its effective branching factor to be around 60% of that of BST, we can assume the number of nodes it visit to be around $O(1.2^m)$, a huge improvement on paper. That being said, A* does far more work than BST per node, due to its need to update the priority queue and calculate hamming distances, which requires checking every bulb on a board. We estimate the per node time complexity to be at least $O(n^2)$ from the hamming distance, which gives us a total run time of around $O(n^2 \cdot 1.2^{n^2})$. This leads to its worse performance on small puzzles that we worked with. Memory wise, however, $O(n^2 \cdot 1.2^{n^2})$ turned out to be a lot better than BST.
+
+IDS solver stands between the previous two. It is slower than BST due to revisiting the same nodes, but we estimate the time complexity to still be $O(2^{n^2})$, albeit with a bigger constant. Memory wise, it uses the least amount of memory among the three - only $O(n^2\cdot d)$, since it only stores the nodes on its current path.
+
+
+Finally, our visualization algorithm. boardToPNG creates a new PNG and traverses through every pixel, and in each pixel, it checks the original board to decide whether to color the pixel bright or not. This takes board size * PNG size time. The PNG is 10 times larger than the board. So if  we take the size of a board as n(for example, a 5x5 board has size 25), then the big-O runtime of boardToPNG is O(11*n^2) = O(n^2). However, because the size of the board is usually not a  big number, this O(n^2) algorithm actually runs pretty fast.
+
+For animateSolution, let suppose the size of the solution(the depth of the solution) is m, then animateSolution class boardToPNG m times and then add the m frames together. Push one frame takes O(1) times, so push m frames take O(m) times. In addition, transforming the boards to PNGs takes O(m * n^2) time. So the total big-O complexity is O(m * n^2) + O(m) = O(m * (n^2)). From this analysis we can find that the runtime of visualization can be largely affected by the size of the board.What’s more,  it is also determined by the level of the game solution.
+
+
+*3). tests*:  
+
+We used the Catch2 framework to test all of our algorithms. For the solver classes, we created different txt files for as the initial board, then we create corresponding expected board. We run algorithms on the initial board and see if they are identical to the expected ones. To make sure our algorithms work for all different situations, we had multiple sets of boards to test, ranging from 3 x 3 board to 6 x 6 board, from the simplest one toggle situation to multiple toggles situations. And to eliminate uncertainty, we made some random boards to run our algorithms to test if it would crash.
+
+For the traversal classes, our tests are a lot simpler. We simply gave it an initial board and made it traverse the graph starting from there. We then check its current depth, board, total nodes traversed so far against our hand calculated, expected value. We also check whether it terminates using a while loop.
+
+specifically, we have "tests" folder in our repository, which contained all of our  tests, please refer to it for more details.
+
+***conclusion to the leading question:***
+
+We found out that random lightbulb puzzles are in general unsolvable mathematically. We noticed that operations (toggles) are commutative and associative. In other words, From a given starting board A, given operations o1 and o2, A->o1->o2 is the same as A->o2->o1. Secondly, for a given  n, there are a fixed number of operations for all boards of size n, (n-2)^2, which we call m. Combining these two, we can see that starting from any given board, only $2^m = \sum_{i = 0}^{m}{m\choose i}$ boards can be reached. In other words, for any given n, the graph consisting of all boards of size n is broken up into a great number of connected components.
