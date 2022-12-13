@@ -45,8 +45,8 @@ PNG* boardToPNG(const Board& board) {
     //row has a b_row = 0 and its x coordinates covers from 1 to 10
     for (unsigned b_row = 0; b_row < size; b_row++) {
         for (unsigned b_col = 0; b_col < size; b_col++) {
-            for (unsigned x = b_row * 11 + 1; x < (b_row+1) * 11; x++) {
-                for (unsigned y = b_col * 11 + 1; y < (b_col+1) * 11; y++) {
+            for (unsigned x = b_col * 11 + 1; x < (b_col+1) * 11; x++) {
+                for (unsigned y = b_row * 11 + 1; y < (b_row+1) * 11; y++) {
                     if (board.getBulb(b_row, b_col)) {
                         //light
                         HSLAPixel & cur_pixel = png_->getPixel(x, y);
