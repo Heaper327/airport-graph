@@ -26,10 +26,9 @@ Algorithm:
 ## Setup
   * Clone the repository from the github.
   * Nagivate into repository: cd light-bulb-puzzle-main
-  * Create build folder: mkdir build
-  * Run in terminal:  camke .. 
-  * Run in terminal: make
-  * Run in terminal: ./main
+  * Create build folder by running `mkdir build`
+  * `cd build` to enter the build directory, then `cmake ..` to build the makefile infrastructures
+  * To compile and run the solver executable, run `make solve` and then `./solve`. Command line prompts will appear next and tell you what to input
 
 ## Test
 A quick guide to test whether the code have problems or not
