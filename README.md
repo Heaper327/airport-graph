@@ -14,9 +14,9 @@ Algorithm:
 
 ## Organization
   ### Root Folder
-    *entry
-    *lib
-    *src
-    *tests
+    * entry
+    * lib
+    * src
+    * tests
 
 
