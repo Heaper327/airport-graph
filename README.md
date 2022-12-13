@@ -13,7 +13,7 @@ Algorithm:
   * A Star
 
 ## Organization
-  ### Root Folder
+  ### - Root Folder
     * entry
     * lib
     * src
