@@ -33,6 +33,10 @@ int main()
         {0, 0, 1, 1, 1, 1, 0, 0},
         {0, 0, 1, 0, 0, 1, 0, 0},
     });
+
+    analyzeGraph(6, 20);
+    return 0;
+
     Board initial = goal;
     initial.toggle(2, 1);
     initial.toggle(2, 4);
